@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سراج الأحساء — تاريخٌ يُروى وحاضرٌ يُعاش | Seraj Al-Ahsa</title>
+  <link rel="icon" type="image/png" href="uploads/seraj_logo.png">
+  
+  <!-- Modern Typography (Cairo for Arabic, Outfit for English) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons via CDN for heritage and sensor symbols -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- GSAP Motion Library CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  
+  <!-- Custom Core Design Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              DEFAULT: '#dfb15b',
+              dark: '#a17834',
+              glow: 'rgba(223, 177, 91, 0.6)',
+            },
+            laser: '#00ebd4',
+            palm: '#2ec866',
+            clay: '#cc6e55',
+            darkBg: '#080a13',
+            darkerBg: '#04050a',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-darkBg text-gray-200 overflow-x-hidden font-['Cairo']">
+
+  <!-- Ambient Audio Indicator & Sound Toggle (Hidden) -->
+  <div class="hidden fixed bottom-6 left-6 z-50 items-center gap-3 py-2.5 px-4 rounded-full bg-black/85 border border-gold/30 shadow-lg shadow-gold/10 backdrop-blur-md" id="audio-bar-container">
+    <div class="flex items-end gap-0.5 w-5 h-4" id="global-audio-waves">
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+    </div>
+    <span class="text-xs font-semibold text-gray-400" data-ar="المؤثرات الصوتية والبيئية" data-en="Generative Audio & Atmosphere">المؤثرات الصوتية والبيئية</span>
+    <button id="btn-toggle-audio" class="w-8 h-8 rounded-full bg-gold/10 border border-gold/30 text-gold flex items-center justify-center hover:bg-gold hover:text-black transition-all duration-200" title="تشغيل/إيقاف الصوت">
+      <i class="fas fa-volume-mute"></i>
+    </button>
+  </div>
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 bg-black/85 backdrop-blur-xl border-b border-gold/25 py-3">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Project Title -->
+      <div class="relative flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold/30 to-gold-dark/20 border border-gold/40 flex items-center justify-center text-gold text-xl shadow-lg shadow-gold/10">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-black bg-gradient-to-r from-white via-gold to-gold-dark bg-clip-text text-fill-transparent" data-ar="سِـرَاج الأَحْـسَـاء" data-en="SERAJ AL-AHSA">سِـرَاج الأَحْـسَـاء</h1>
+            <span class="px-2 py-0.5 rounded-full bg-gold/20 text-gold border border-gold/40 text-[10px] font-black">
+              الستوري بورد السينمائي 🎬
+            </span>
+          </div>
+          <span class="text-[11px] text-gray-400 font-medium" data-ar="«تاريخٌ يُروى.. وحاضرٌ يُعاش»" data-en="«A History Told, A Present Lived»">«تاريخٌ يُروى.. وحاضرٌ يُعاش»</span>
+        </div>
+      </div>
+      
+      <!-- Main Universal Nav Links -->
+      <nav class="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
+        <a href="index.html" class="nav-link text-xs font-black px-3.5 py-2 rounded-xl text-gold bg-gold/15 border border-gold/40 shadow-sm flex items-center gap-1.5 active" data-ar="الستوري بورد والتجربة" data-en="Visual Storyboard">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>الستوري بورد والتجربة</span>
+        </a>
+        <a href="museum-plan.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5" data-ar="دراسة المتحف" data-en="Museum Plan">
+          <i class="fa-solid fa-landmark-dome text-gold"></i>
+          <span>دراسة المتحف</span>
+        </a>
+        <a href="pdr.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5" data-ar="وثيقة PDR" data-en="PDR Project">
+          <i class="fa-solid fa-diagram-project text-laser"></i>
+          <span>وثيقة PDR</span>
+        </a>
+        
+        <a href="notes-kanban.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-clipboard-check text-laser"></i>
+          <span>الملاحظات والتدقيق 📋</span>
+        </a>
+        <a href="team-admin.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gold bg-gold/10 border border-gold/30 hover:bg-gold hover:text-black transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>الفريق والصلاحيات 👑</span>
+        </a>
+      </nav>
+
+      <!-- Action Tools: Quick Navigator + Lang + Logout -->
+      <div class="flex items-center gap-2">
+        <button class="btn-open-omni-navigator px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-gold to-gold-dark hover:from-white hover:to-gold text-black font-black text-xs flex items-center gap-1.5 shadow-md shadow-gold/20 transition-all cursor-pointer" title="دليل المنصة والبحث السريع (Ctrl+K)">
+          <i class="fa-solid fa-bolt"></i>
+          <span>دليل المنصة ⚡</span>
+        </button>
+
+        <button id="btn-auth-logout" class="btn-global-logout hidden px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-clay text-gray-300 hover:text-white border border-white/10 text-xs font-bold transition-all items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>خروج</span>
+        </button>
+        
+        <button id="btn-lang-toggle" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-white/5 border border-white/10 hover:border-gold transition-all text-white cursor-pointer">
+          <i class="fa-solid fa-globe"></i>
+          <span class="lang-text">EN</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+    <!-- Hero / Intro Section -->
+    <section id="section-intro" class="relative py-20 bg-[radial-gradient(circle_at_top_center,rgba(223,177,91,0.14)_0%,transparent_65%)] overflow-hidden">
+      <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M10 10 H90 V90 H10 Z\' fill=\'none\' stroke=\'rgba(255,255,255,0.015)\' stroke-width=\'1\'/%3E%3C/svg%3E')] opacity-70 pointer-events-none"></div>
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
+        
+        <div class="lg:col-span-2 flex flex-col items-start gap-5 p-8 rounded-2xl bg-white/5 border border-gold/20 shadow-2xl backdrop-blur-md">
+          <div class="flex items-center gap-2">
+            <div class="badge" data-ar="الستوري بورد والتصور التنفيذي" data-en="Visual Storyboard & Executive Scenario">الستوري بورد والتصور التنفيذي</div>
+            <span class="px-3 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 text-xs font-black">
+              «تاريخٌ يُروى.. وحاضرٌ يُعاش»
+            </span>
+          </div>
+          <h2 class="text-3xl lg:text-4xl font-black text-white leading-snug" data-ar="الستوري بورد البصري: معايشة رحلة الحواس السبعة" data-en="Visual Storyboard: The 7 Senses Immersive Journey">الستوري بورد البصري: معايشة رحلة الحواس السبعة</h2>
+          <p class="text-base text-gray-300 leading-relaxed" data-ar="رؤية بصرية وسينمائية متكاملة تستعرض كواليس التجربة الشعورية والهندسية لمشروع «سراج الأحساء». هنا نأخذك في جولة سينمائية متسلسلة توثق ماذا يرى ويسمع ويشعر به الزائر في كل محطة، وصولاً إلى أدق التفاصيل التقنية والميزانية التنفيذية." data-en="A comprehensive cinematic visualization detailing the emotional and engineering narrative of 'Seraj Al-Ahsa'. Walk through a sequential spatial storyboard capturing what visitors see, hear, and feel at every station, complete with technical specifications and budget breakdowns.">
+            رؤية بصرية وسينمائية متكاملة تستعرض كواليس التجربة الشعورية والهندسية لمشروع «سراج الأحساء». هنا نأخذك في جولة سينمائية متسلسلة توثق ماذا يرى ويسمع ويشعر به الزائر في كل محطة، وصولاً إلى أدق التفاصيل التقنية والميزانية التنفيذية.
+          </p>
+          <div class="flex flex-wrap gap-4 mt-2">
+            <a href="#section-storyboard" class="flex items-center gap-2.5 px-6 py-3 rounded-full font-bold text-black bg-gradient-to-br from-gold to-gold-dark hover:from-white hover:to-gold shadow-lg shadow-gold/20 hover:scale-105 transition-all">
+              <i class="fa-solid fa-clapperboard"></i>
+              <span data-ar="استكشاف الستوري بورد الحي" data-en="Explore Visual Storyboard">استكشاف الستوري بورد الحي</span>
+            </a>
+            <a href="museum-plan.html" class="flex items-center gap-2.5 px-6 py-3 rounded-full font-bold text-gold bg-black/60 border border-gold/50 hover:bg-gold hover:text-black shadow-lg shadow-gold/10 hover:scale-105 transition-all">
+              <i class="fa-solid fa-landmark-dome"></i>
+              <span data-ar="دراسة المتحف وغرفة الفريق" data-en="Museum Master Plan & Team">دراسة المتحف وغرفة الفريق</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-1 gap-4">
+          <div class="p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md text-center flex flex-col items-center justify-center">
+            <span class="text-4xl font-black text-gold drop-shadow-[0_0_15px_rgba(223,177,91,0.4)]">07</span>
+            <span class="text-xs text-gray-400 font-bold mt-1" data-ar="مشاهد حسية غامرة" data-en="Immersive Sensory Scenes">مشاهد حسية غامرة</span>
+          </div>
+          <div class="p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md text-center flex flex-col items-center justify-center">
+            <span class="text-4xl font-black text-laser drop-shadow-[0_0_15px_rgba(0,235,212,0.4)]">03</span>
+            <span class="text-xs text-gray-400 font-bold mt-1" data-ar="محاور كبرى متكاملة" data-en="Major Integrated Axes">محاور كبرى متكاملة</span>
+          </div>
+          <div class="col-span-2 lg:col-span-1 p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md text-center flex flex-col items-center justify-center">
+            <span class="text-4xl font-black text-gold drop-shadow-[0_0_15px_rgba(223,177,91,0.4)]">360°</span>
+            <span class="text-xs text-gray-400 font-bold mt-1" data-ar="سينما قبابية رباعية الأبعاد" data-en="4D Dome Projection">سينما قبابية رباعية الأبعاد</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Journey Map Section -->
+    <section id="section-map" class="py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-3xl font-extrabold text-white mb-3" data-ar="المخطط التفاعلي لمسار الحواس السبعة (خريطة التدفق)" data-en="The 7 Senses Spatial Map (Experience Flow)">المخطط التفاعلي لمسار الحواس السبعة (خريطة التدفق)</h2>
+          <p class="text-gray-400 text-sm" data-ar="انقر على أي محطة بالخريطة للتنقل السريع واستعراض مشهدها البصري ومواصفاتها الهندسية والمالية" data-en="Click on any station on the map to navigate and inspect its visual narrative, engineering specs, and financial breakdown">انقر على أي محطة بالخريطة للتنقل السريع واستعراض مشهدها البصري ومواصفاتها الهندسية والمالية</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md overflow-hidden">
+          <!-- Elegant Interactive SVG Map -->
+          <svg class="w-full h-auto block" viewBox="0 0 1000 450" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(212, 175, 55, 0.05)" stroke-width="1"/>
+              </pattern>
+              <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#dfb15b" />
+                <stop offset="100%" stop-color="#9a6c2d" />
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+
+            <!-- Path Line connecting the 7 stations -->
+            <path class="journey-flow-path" d="M 80,225 Q 180,80 300,120 T 500,280 T 700,140 T 920,225" fill="none" stroke="url(#gold-grad)" stroke-width="4" stroke-dasharray="10, 8" />
+            <path class="journey-flow-path-active" d="M 80,225 Q 180,80 300,120 T 500,280 T 700,140 T 920,225" fill="none" stroke="#00ebd4" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000" id="map-active-flow" />
+
+            <!-- Station 1 Node -->
+            <g class="map-node active" data-station="1" transform="translate(80, 225)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">01</text>
+              <text y="48" class="node-label" data-ar="بوابة الوصول" data-en="Arrival Port">بوابة الوصول</text>
+            </g>
+
+            <!-- Station 2 Node -->
+            <g class="map-node" data-station="2" transform="translate(230, 110)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">02</text>
+              <text y="48" class="node-label" data-ar="ممر الزمن" data-en="Time Corridor">ممر الزمن</text>
+            </g>
+
+            <!-- Station 3 Node -->
+            <g class="map-node" data-station="3" transform="translate(370, 150)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">03</text>
+              <text y="48" class="node-label" data-ar="عصر الرسالة" data-en="Dawn of Message">عصر الرسالة</text>
+            </g>
+
+            <!-- Station 4 Node -->
+            <g class="map-node" data-station="4" transform="translate(500, 280)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">04</text>
+              <text y="48" class="node-label" data-ar="جناح جواثى" data-en="Jawatha Pavilion">جناح جواثى</text>
+            </g>
+
+            <!-- Station 5 Node -->
+            <g class="map-node" data-station="5" transform="translate(630, 200)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">05</text>
+              <text y="48" class="node-label" data-ar="الواحة المفتوحة" data-en="Living Oasis">الواحة المفتوحة</text>
+            </g>
+
+            <!-- Station 6 Node -->
+            <g class="map-node" data-station="6" transform="translate(770, 150)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">06</text>
+              <text y="48" class="node-label" data-ar="السينما الدائرية" data-en="Dome Cinema">السينما الدائرية</text>
+            </g>
+
+            <!-- Station 7 Node -->
+            <g class="map-node" data-station="7" transform="translate(920, 225)">
+              <circle r="28" class="outer-node-ring" />
+              <circle r="18" class="inner-node" />
+              <text y="5" class="node-num">07</text>
+              <text y="48" class="node-label" data-ar="مركز المعرفة" data-en="Knowledge Center">مركز المعرفة</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Visual Storyboard Showcase Section -->
+    <section id="section-storyboard" class="py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <div class="badge mb-3" data-ar="التصور السينمائي التفصيلي" data-en="Cinematic Storyboard Detail">التصور السينمائي التفصيلي</div>
+          <h2 class="text-3xl font-extrabold text-white mb-3" data-ar="الستوري بورد ومواصفات المحطات السبع" data-en="The 7 Stations Storyboard & Architecture">الستوري بورد ومواصفات المحطات السبع</h2>
+          <p class="text-gray-400 text-sm max-w-2xl mx-auto" data-ar="استعراض شامل يجمع بين السرد التاريخي والروحي، التجهيزات الهندسية، والميزانيات التقديرية لكل محطة في المعرض" data-en="A comprehensive showcase blending historical narrative, engineering architecture, and budget plans for each station">استعراض شامل يجمع بين السرد التاريخي والروحي، التجهيزات الهندسية، والميزانيات التقديرية لكل محطة في المعرض</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Left Panel: Station Switcher Navigation -->
+          <div class="lg:col-span-1 flex flex-col p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md max-h-[720px] overflow-y-auto">
+            <div class="flex items-center gap-2.5 text-lg font-bold border-b border-white/8 pb-3.5 mb-3.5">
+              <i class="fa-solid fa-clapperboard text-gold"></i>
+              <span data-ar="اختر مشهد المحطة" data-en="Select Station Scene">اختر مشهد المحطة</span>
+            </div>
+            <div class="flex flex-col gap-2.5">
+              <button class="station-btn active" data-station="1">
+                <span class="num">01</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="ساحة الوصول والتهيئة" data-en="Arrival & Strategic Alignment">ساحة الوصول والتهيئة</span>
+                  <span class="tech-tag" data-ar="شلال مائي ذكي ليزري وسوار RFID" data-en="Smart Water Laser & RFID">شلال مائي ذكي ليزري وسوار RFID</span>
+                </div>
+              </button>
+              
+              <button class="station-btn" data-station="2">
+                <span class="num">02</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="ممر رحلة الزمن (أعماق هجر)" data-en="Time Corridor (Hajar Depths)">ممر رحلة الزمن (أعماق هجر)</span>
+                  <span class="tech-tag" data-ar="أرضية رملية تفاعلية LED و LiDAR" data-en="Kinetic Sand Floor & LiDAR">أرضية رملية تفاعلية LED و LiDAR</span>
+                </div>
+              </button>
+
+              <button class="station-btn" data-station="3">
+                <span class="num">03</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="جناح عصر الرسالة (التحول العظيم)" data-en="Dawn of Message (The Great Shift)">جناح عصر الرسالة (التحول العظيم)</span>
+                  <span class="tech-tag" data-ar="هولوغرام ثلاثي الأبعاد وصوت بؤري" data-en="3D Hologram & Directional Audio">هولوغرام ثلاثي الأبعاد وصوت بؤري</span>
+                </div>
+              </button>
+
+              <button class="station-btn" data-station="4">
+                <span class="num">04</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="جناح جواثى والعهد الراشدي" data-en="Jawatha & Rashidun Era">جناح جواثى والعهد الراشدي</span>
+                  <span class="tech-tag" data-ar="شاشات OLED شفافة ورائحة المطر" data-en="Transparent OLED & Rain Scent">شاشات OLED شفافة ورائحة المطر</span>
+                </div>
+              </button>
+
+              <button class="station-btn" data-station="5">
+                <span class="num">05</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="واحة الأحساء الحية المفتوحة" data-en="Al-Ahsa Open Living Oasis">واحة الأحساء الحية المفتوحة</span>
+                  <span class="tech-tag" data-ar="صوت توليدي ورذاذ مناخي ذكي" data-en="Generative Audio & Climatic Mist">صوت توليدي ورذاذ مناخي ذكي</span>
+                </div>
+              </button>
+
+              <button class="station-btn" data-station="6">
+                <span class="num">06</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="السينما القبابية الغامرة 4D" data-en="Fulldome 360° Cinema & 4D">السينما القبابية الغامرة 4D</span>
+                  <span class="tech-tag" data-ar="عرض قبابي 360° واهتزازات كيناتيكية" data-en="360° Dome & Kinetic Platforms">عرض قبابي 360° واهتزازات كيناتيكية</span>
+                </div>
+              </button>
+
+              <button class="station-btn" data-station="7">
+                <span class="num">07</span>
+                <div class="txt-group">
+                  <span class="title" data-ar="مركز المعرفة واستدامة الأثر" data-en="Knowledge & Archival Center">مركز المعرفة واستدامة الأثر</span>
+                  <span class="tech-tag" data-ar="طاولات تفاعلية ذكية وسحابة أرشفة" data-en="Smart Tables & Archival Cloud">طاولات تفاعلية ذكية وسحابة أرشفة</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Storyboard Viewer -->
+          <div class="lg:col-span-2 flex flex-col p-6 rounded-2xl bg-white/5 border border-gold/15 shadow-xl backdrop-blur-md">
+            
+            <!-- Storyboard Station Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 mb-5 gap-3">
+              <div class="flex items-center gap-3">
+                <span class="text-base font-black bg-gradient-to-r from-gold to-gold-dark text-black px-3 py-1 rounded-lg shadow-md" id="current-station-num">01</span>
+                <div>
+                  <h3 class="text-lg font-black text-white" id="current-station-name">ساحة الوصول والتهيئة الاستراتيجية</h3>
+                  <p class="text-xs text-gold/80 font-medium" id="current-station-tagline">بوابة الماء والضوء: أولى خطوات العبور من الحاضر إلى عمق هجر</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-palm rounded-full shadow-[0_0_8px_#2ec866] animate-pulse"></span>
+                <span class="text-xs font-bold text-palm" data-ar="معايشة بصرية وحسية" data-en="Visual & Sensory Immersion">معايشة بصرية وحسية</span>
+              </div>
+            </div>
+
+            <!-- Sensory Blueprint Matrix Bar (Live Senses Indicators) -->
+            <div class="mb-5 p-4 rounded-xl bg-black/40 border border-white/8">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-radar text-gold"></i>
+                  <span>مصفوفة استهداف الحواس في هذه المحطة</span>
+                </span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center" id="sensory-matrix-container">
+                <!-- Injected dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- 4 Executive Storyboard Tabs -->
+            <div class="flex flex-wrap gap-2 mb-5 border-b border-white/10 pb-3">
+              <button id="tab-btn-scenario" class="story-tab active flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl border border-gold/40 text-gold bg-gold/15 transition-all shadow-sm" data-tab="scenario">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span data-ar="المشهد البصري والسردي" data-en="Visual Scene & Narrative">المشهد البصري والسردي</span>
+              </button>
+              <button id="tab-btn-tech" class="story-tab flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all" data-tab="tech">
+                <i class="fa-solid fa-microchip"></i>
+                <span data-ar="التجهيزات والمواصفات الهندسية" data-en="Technical Specs">التجهيزات والمواصفات الهندسية</span>
+              </button>
+              <button id="tab-btn-plan" class="story-tab flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all" data-tab="plan">
+                <i class="fa-solid fa-file-lines"></i>
+                <span data-ar="الخطة الإنشائية ومراحل التنفيذ" data-en="Construction Plan">الخطة الإنشائية ومراحل التنفيذ</span>
+              </button>
+              <button id="tab-btn-finance" class="story-tab flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all" data-tab="finance">
+                <i class="fa-solid fa-calculator"></i>
+                <span data-ar="الميزانية والجدول الزمني" data-en="Budget & Timeline">الميزانية والجدول الزمني</span>
+              </button>
+            </div>
+
+            <!-- Storyboard Tab Content Panels -->
+            <div class="bg-black/35 border border-white/6 rounded-xl p-6 min-h-[400px]">
+              
+              <!-- Tab 1: Visual Scene & Narrative -->
+              <div id="panel-scenario" class="story-panel flex flex-col gap-5">
+                
+                <!-- Visual Concept Art Banner (High-Res Render) -->
+                <div class="relative w-full rounded-2xl overflow-hidden border border-gold/30 shadow-2xl group cursor-pointer bg-black/60 transition-all duration-300 hover:border-gold" id="story-image-wrapper" title="انقر لتكبير المشهد البصري">
+                  <div class="aspect-video w-full overflow-hidden bg-black/40 relative">
+                    <img id="story-concept-image" src="assets/storyboard/station1.jpg" alt="التصور البصري للمحطة" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                    
+                    <!-- Top Right Badges -->
+                    <div class="absolute top-3 right-3 flex items-center gap-2">
+                      <span class="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-gold border border-gold/40 text-[11px] font-black flex items-center gap-1.5 shadow-lg">
+                        <i class="fa-solid fa-camera text-xs"></i>
+                        <span data-ar="المشهد البصري المعتمد (4K Render)" data-en="Visual Concept (4K Render)">المشهد البصري المعتمد (4K Render)</span>
+                      </span>
+                    </div>
+
+                    <!-- Zoom Hint Badge -->
+                    <div class="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-white border border-white/20 text-[10px] font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-expand"></i>
+                        <span data-ar="تكبير المشهد" data-en="Expand View">تكبير المشهد</span>
+                      </span>
+                    </div>
+
+                    <!-- Bottom Caption Overlay -->
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-4 sm:p-5 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                      <div>
+                        <span class="text-[10px] uppercase font-mono tracking-widest text-gold font-black" id="story-image-station-label">STATION 01 CONCEPT ART</span>
+                        <h4 class="text-sm sm:text-base font-black text-white mt-0.5" id="story-image-caption-title">ساحة الوصول وشلال الليزر الذكي</h4>
+                      </div>
+                      <span class="text-[11px] text-gray-300 font-medium hidden sm:inline" id="story-image-caption-sub">بوابة الماء والضوء: أولى خطوات العبور من الحاضر إلى عمق هجر</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-gold/[0.04] border border-gold/20 flex items-start gap-3.5">
+                  <i class="fa-solid fa-quote-right text-gold text-2xl shrink-0 mt-0.5 opacity-80"></i>
+                  <p class="text-sm text-gray-200 leading-relaxed font-normal" id="story-scenario-text"></p>
+                </div>
+                
+                <div>
+                  <h4 class="text-xs font-black text-gold mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>أبرز معالم ونقاط الإبهار في هذا المشهد:</span>
+                  </h4>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="story-highlights-container">
+                    <!-- Injected dynamically -->
+                  </div>
+                </div>
+
+                <!-- Station 7 Digital Portal (Personalized Tap Simulation) -->
+                <div id="hud-overlay-st7" class="mt-4 p-5 rounded-xl bg-gradient-to-br from-black/90 to-gold/10 border border-gold/40 shadow-lg shadow-gold/10 hidden">
+                  <div class="flex items-center gap-2 text-gold font-extrabold text-sm mb-2">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span data-ar="بوابة طاولة الدراسة واستلام الإهداء المعرفي" data-en="Smart Table Research Portal">بوابة طاولة الدراسة واستلام الإهداء المعرفي</span>
+                  </div>
+                  <p class="text-xs text-gray-300 mb-3" data-ar="قرب السوار الرقمي من القارئ لتصدير باقة الأحساء التاريخية والمخطوطات المعتمدة لبريدك الإلكتروني:" data-en="Tap RFID bracelet to export certified manuscripts and publications to your email:">قرب السوار الرقمي من القارئ لتصدير باقة الأحساء التاريخية والمخطوطات المعتمدة لبريدك الإلكتروني:</p>
+                  <div class="flex gap-2 max-w-md">
+                    <input type="email" id="st7-email" class="flex-grow bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-gold" placeholder="example@domain.com" />
+                    <button id="st7-btn-send" class="px-4 py-2 text-xs font-bold rounded-lg text-black bg-gradient-to-br from-gold to-gold-dark hover:from-white hover:to-gold transition-all" data-ar="تصدير الباقة" data-en="Export Bundle">تصدير الباقة</button>
+                  </div>
+                  <div id="st7-success-msg" class="text-xs text-palm font-semibold mt-2 hidden" data-ar="تم إرسال الملفات والمخطوطات لبريدك بنجاح!" data-en="Files and manuscripts sent successfully!">تم إرسال الملفات والمخطوطات لبريدك بنجاح!</div>
+                </div>
+              </div>
+
+              <!-- Tab 2: Technical Specifications & Engineering -->
+              <div id="panel-tech" class="story-panel hidden flex flex-col gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="story-tech-container">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
+
+              <!-- Tab 3: Construction Plan & Phases -->
+              <div id="panel-plan" class="story-panel hidden flex flex-col gap-4" id="story-plan-container">
+                <!-- Injected dynamically -->
+              </div>
+
+              <!-- Tab 4: Budget & Timeline -->
+              <div id="panel-finance" class="story-panel hidden flex flex-col gap-4" id="story-finance-container">
+                <!-- Injected dynamically -->
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Historical Stations Chronology Section -->
+    <section id="section-history" class="py-20 bg-white/2 border-y border-gold/10 relative">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <div class="badge mb-3" data-ar="المسار الزمني التاريخي" data-en="Historical Chronology">المسار الزمني التاريخي</div>
+          <h2 class="text-3xl font-extrabold text-white mb-4" data-ar="المحطات التاريخية للأحساء" data-en="Historical Stations of Al-Ahsa">المحطات التاريخية للأحساء</h2>
+          <p class="text-gray-400 text-sm max-w-3xl mx-auto leading-relaxed" data-ar="تتبع تجربة الزائر تسلسلًا تاريخيًا مركزًا على الأحساء، بحيث تمثل كل محطة فصلًا من قصة المكان ودوره في شرق الجزيرة العربية وصدر الإسلام." data-en="The visitor's experience follows a focused historical chronology centered on Al-Ahsa, representing each station as a chapter of the location's narrative and its role in Eastern Arabia and the dawn of Islam.">
+            تتبع تجربة الزائر تسلسلًا تاريخيًا مركزًا على الأحساء، بحيث تمثل كل محطة فصلًا من قصة المكان ودوره في شرق الجزيرة العربية وصدر الإسلام.
+          </p>
+        </div>
+
+        <!-- Timeline Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+          <!-- Card 1 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">01</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الأولى" data-en="Station 1">المحطة الأولى</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-chess-rook"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="هجر قبل الإسلام" data-en="Hajar before Islam">هجر قبل الإسلام</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="التعريف بهجر بوصفها حاضرة رئيسية في شرق الجزيرة العربية، مع عرض سكان المنطقة، ومسمياتها التاريخية، وحدودها، وارتباطها بالبحرين التاريخية وأوال وقطر والخط." data-en="Introducing Hajar as a major metropolis in Eastern Arabia, presenting the region's inhabitants, historical names, borders, and its connection to historical Bahrain, Awal, Qatar, and Al-Khatt.">
+              التعريف بهجر بوصفها حاضرة رئيسية في شرق الجزيرة العربية، مع عرض سكان المنطقة، ومسمياتها التاريخية، وحدودها، وارتباطها بالبحرين التاريخية وأوال وقطر والخط.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">02</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الثانية" data-en="Station 2">المحطة الثانية</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-route"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="الواحة والطرق والأسواق" data-en="Oasis, Routes & Markets">الواحة والطرق والأسواق</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="عرض أثر العيون والنخيل والزراعة في نشوء الاستقرار، ودور الأسواق والقوافل والموانئ التاريخية، وحصن المشقر وميناء العقير في حركة التجارة والاتصال الحضاري." data-en="Showcasing the impact of natural springs, palm trees, and agriculture on the establishment of settlement, the role of historical markets, caravans, and ports, and the influence of Al-Mushaqqar Fort and Aqeer Port on trade and civilizational connection.">
+              عرض أثر العيون والنخيل والزراعة في نشوء الاستقرار، ودور الأسواق والقوافل والموانئ التاريخية، وحصن المشقر وميناء العقير في حركة التجارة والاتصال الحضاري.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">03</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الثالثة" data-en="Station 3">المحطة الثالثة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-scroll"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="الأحساء في السيرة النبوية" data-en="Al-Ahsa in the Prophetic Biography">الأحساء في السيرة النبوية</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="إبراز حضور هجر ومنتجاتها وأسمائها في الروايات والمرويات المرتبطة بالعهد النبوي، مثل قلال هجر، والبرني، والثوب الظهراني، والدباء والحنتم، ضمن سياق علمي موثق." data-en="Highlighting the presence of Hajar, its products, and names in narrations associated with the Prophetic era, such as Hajar clay jars (Qilal Hajar), Barni dates, Thawb Zahrani garments, Dubba, and Hantam jars, within a documented scientific context.">
+              إبراز حضور هجر ومنتجاتها وأسمائها في الروايات والمرويات المرتبطة بالعهد النبوي، مثل قلال هجر، والبرني، والثوب الظهراني، والدباء والحنتم، ضمن سياق علمي موثق.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">04</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الرابعة" data-en="Station 4">المحطة الرابعة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-envelope-open-text"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="رسالة النبوة إلى البحرين" data-en="Prophetic Message to Bahrain">رسالة النبوة إلى البحرين</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="تجسيد وصول رسالة النبي ﷺ إلى المنذر بن ساوى، والتعريف بالوضع السياسي والديني للمنطقة، وكيف دخل أهلها في الإسلام وما ترتب على ذلك من تحول تاريخي." data-en="Portraying the arrival of the Prophet's ﷺ letter to Al-Munzir ibn Sawa, outlining the region's political and religious landscape, how its people embraced Islam, and the subsequent historical transformation.">
+              تجسيد وصول رسالة النبي ﷺ إلى المنذر بن ساوى، والتعريف بالوضع السياسي والديني للمنطقة، وكيف دخل أهلها في الإسلام وما ترتب على ذلك من تحول تاريخي.
+            </p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">05</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الخامسة" data-en="Station 5">المحطة الخامسة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-mosque"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="وفد عبد القيس وجواثى" data-en="Delegation of Abdul Qays & Jawatha">وفد عبد القيس وجواثى</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="رواية رحلة وفد عبد القيس إلى المدينة ولقائهم بالنبي ﷺ، وما حملوه من تعاليم إلى قومهم، مع إبراز مسجد جواثى ومكانته في التاريخ الإسلامي." data-en="Narrating the journey of the Abdul Qays delegation to Medina and their meeting with the Prophet ﷺ, the teachings they brought back to their people, and highlighting Jawatha Mosque and its place in Islamic history.">
+              رواية رحلة وفد عبد القيس إلى المدينة ولقائهم بالنبي ﷺ، وما حملوه من تعاليم إلى قومهم، مع إبراز مسجد جواثى ومكانته في التاريخ الإسلامي.
+            </p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">06</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة السادسة" data-en="Station 6">المحطة السادسة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="الثبات في عهد أبي بكر" data-en="Steadfastness in Abu Bakr's Era">الثبات في عهد أبي بكر</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="عرض موقف الجارود العبدي وثبات أهل المنطقة على الإسلام، وأحداث الردة والحصار في جواثى، ودور العلاء بن الحضرمي في إعادة الاستقرار." data-en="Presenting the stance of Al-Jaroud Al-Abdi and the steadfastness of the region's people on Islam, the events of Apostasy (Riddah) wars, the siege of Jawatha, and the role of Al-Ala'a ibn Al-Hadrami in restoring stability.">
+              عرض موقف الجارود العبدي وثبات أهل المنطقة على الإسلام، وأحداث الردة والحصار في جواثى، ودور العلاء بن الحضرمي في إعادة الاستقرار.
+            </p>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">07</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة السابعة" data-en="Station 7">المحطة السابعة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="الأحساء في عهد الخلفاء الراشدين" data-en="Al-Ahsa in the Rashidun Caliphate">الأحساء في عهد الخلفاء الراشدين</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="تتبع دور المنطقة في عهد عمر وعثمان وعلي رضي الله عنهم، بما يشمل الإدارة، وبيت المال، والحركة البحرية، ودارين، والفتوحات التي ارتبطت بشرق الجزيرة العربية." data-en="Tracing the region's role during the caliphates of Umar, Uthman, and Ali (may Allah be pleased with them), including governance, the treasury (Bayt al-Mal), maritime activity, Darin, and the conquests associated with Eastern Arabia.">
+              تتبع دور المنطقة في عهد عمر وعثمان وعلي رضي الله عنهم، بما يشمل الإدارة، وبيت المال، والحركة البحرية، ودارين، والفتوحات التي ارتبطت بشرق الجزيرة العربية.
+            </p>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/8 hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden shadow-sm">
+            <div class="absolute -right-4 -bottom-4 text-white/[0.02] text-7xl font-bold font-mono group-hover:text-gold/[0.04] transition-all duration-300 pointer-events-none">08</div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-gold uppercase tracking-wider" data-ar="المحطة الثامنة" data-en="Station 8">المحطة الثامنة</span>
+              <div class="w-8 h-8 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-sm group-hover:bg-gold group-hover:text-black transition-all">
+                <i class="fa-solid fa-monument"></i>
+              </div>
+            </div>
+            <h3 class="text-base font-extrabold text-white group-hover:text-gold transition-colors" data-ar="إرث الأحساء المستمر" data-en="Al-Ahsa's Continuous Legacy">إرث الأحساء المستمر</h3>
+            <p class="text-xs text-gray-400 leading-relaxed" data-ar="ربط الأحداث التاريخية بالمواقع والشواهد والذاكرة المحلية اليوم، وإظهار استمرار أثر جواثى وهجر والعقير والواحة في هوية الأحساء الثقافية والوطنية." data-en="Linking historical events to modern sites, monuments, and local memory today, demonstrating the continuous impact of Jawatha, Hajar, Aqeer, and the Oasis on Al-Ahsa's cultural and national identity.">
+              ربط الأحداث التاريخية بالمواقع والشواهد والذاكرة المحلية اليوم، وإظهار استمرار أثر جواثى وهجر والعقير والواحة في هوية الأحساء الثقافية والوطنية.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Master Axes Link Box -->
+    <section class="py-16 bg-darkBg">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="p-8 rounded-3xl bg-gradient-to-r from-gold/10 via-white/[0.02] to-laser/10 border border-gold/20 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div class="flex flex-col gap-2">
+            <span class="text-xs font-black text-gold uppercase tracking-wider">منظومة سراج الأحساء المتكاملة</span>
+            <h3 class="text-2xl font-black text-white">انتقل إلى الدراسة الشاملة وغرفة إنجاز PDR</h3>
+            <p class="text-xs text-gray-400 max-w-2xl leading-relaxed">
+              استكشف تفاصيل المحاور الثلاثة: المتحف الدائم، عرض الهولوجرام، وتجربة الـ 4D VR مع الحوكمة، المتجر، وجداول الميزانية المعتمدة.
+            </p>
+          </div>
+          <div class="flex items-center gap-3 shrink-0 flex-wrap">
+            <a href="museum-plan.html" class="px-5 py-3 rounded-xl bg-gold text-black font-black text-xs hover:bg-white transition-all shadow-lg shadow-gold/20 flex items-center gap-2">
+              <i class="fa-solid fa-landmark-dome"></i>
+              <span>دراسة المتحف المفصلة</span>
+            </a>
+            <a href="pdr.html" class="px-5 py-3 rounded-xl bg-white/5 border border-laser/40 text-laser hover:bg-laser hover:text-black font-black text-xs transition-all flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project"></i>
+              <span>وثيقة PDR</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Concept Art Lightbox Modal -->
+  <div id="image-lightbox-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-8 hidden animate-fadeIn">
+    <button id="btn-close-lightbox" class="absolute top-5 left-5 w-11 h-11 rounded-full bg-white/10 hover:bg-gold hover:text-black text-white text-lg flex items-center justify-center transition-all cursor-pointer z-10 border border-white/20">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-6xl w-full flex flex-col items-center gap-4">
+      <div class="relative w-full max-h-[78vh] flex items-center justify-center overflow-hidden rounded-2xl border border-gold/40 shadow-2xl bg-black">
+        <img id="lightbox-img" src="assets/storyboard/station1.jpg" alt="Zoomed Concept Art" class="max-w-full max-h-[78vh] object-contain rounded-xl" />
+      </div>
+      <div class="text-center bg-black/60 px-6 py-3 rounded-2xl border border-white/10">
+        <h3 id="lightbox-title" class="text-base sm:text-lg font-black text-gold"></h3>
+        <p id="lightbox-desc" class="text-xs text-gray-300 mt-1 max-w-2xl"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-darkerBg border-t border-white/6 py-8 text-center mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-2.5 text-sm text-gray-400">
+      <div class="flex items-center gap-4 text-xs mb-1">
+        <a href="museum-plan.html" class="text-gold hover:underline font-bold">دراسة ومخطط سراج الأحساء وغرفة الفريق</a>
+        <span>•</span>
+        <a href="pdr.html" class="text-laser hover:underline font-bold">وثيقة PDR وغرفة الإنجاز</a>
+      </div>
+      <p data-ar="مشروع سِـرَاج الأَحْـسَـاء © 2026. جميع الحقوق محفوظة." data-en="Seraj Al-Ahsa Project © 2026. All Rights Reserved.">مشروع سِـرَاج الأَحْـسَـاء © 2026. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <!-- Unified Security & Auth Guard -->
+  <script src="js/authGuard.js"></script>
+
+  <!-- MVC Architecture Scripts -->
+  <script src="js/model.js"></script>
+  <script src="js/views/domView.js"></script>
+  <script src="js/views/audioView.js"></script>
+  
+  <!-- Main Controller and Entry Bootstrapper -->
+  <script src="js/controller.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Master Datasets for Omni-Generator -->
+  <script src="js/detailedPlanData.js"></script>
+  <script src="js/pdrData.js"></script>
+  <script src="js/pdrWordExporter.js"></script>
+  
+  <!-- Universal Platform Navigation & Omni-Navigator -->
+  <script src="js/platformNav.js"></script>
+
+  <!-- Executive Pitch Deck & PDF Generator Engine -->
+  <script src="js/executiveReportGenerator.js"></script>
+</body>
+</html>
+

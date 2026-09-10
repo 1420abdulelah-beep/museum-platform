@@ -4,6 +4,7 @@
   "description": "Interactive Museum & Canvas Web Application deployed on AWS Elastic Beanstalk",
   "main": "server.js",
   "scripts": {
+    "build": "node ./scripts/prepare-public.js",
     "start": "node server.js",
     "migrate:supabase": "node ./scripts/migrate-to-supabase.js",
     "migrate:aws-to-supabase": "node ./scripts/migrate-aws-to-supabase.js",

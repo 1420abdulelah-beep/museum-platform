@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سراج الأحساء — إدارة فريق العمل والصلاحيات | Seraj Al-Ahsa Admin</title>
+  <link rel="icon" type="image/png" href="uploads/seraj_logo.png">
+  
+  <!-- Modern Typography (Cairo for Arabic, Outfit for English) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Core Design Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              DEFAULT: '#dfb15b',
+              dark: '#a17834',
+              glow: 'rgba(223, 177, 91, 0.6)',
+            },
+            laser: '#00ebd4',
+            palm: '#2ec866',
+            clay: '#cc6e55',
+            darkBg: '#080a13',
+            darkerBg: '#04050a',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body id="team-admin-page-root" class="bg-darkBg text-gray-200 overflow-x-hidden font-['Cairo'] min-h-screen flex flex-col justify-between">
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-lg border-b border-gold/20 py-3.5">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Project Title -->
+      <div class="relative flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold/30 to-gold-dark/20 border border-gold/40 flex items-center justify-center text-gold text-xl shadow-lg shadow-gold/10">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-black bg-gradient-to-r from-white via-gold to-gold-dark bg-clip-text text-fill-transparent">
+              سِـرَاج الأَحْـسَـاء
+            </h1>
+            <span class="px-2 py-0.5 rounded-md bg-gold/20 text-gold border border-gold/40 text-[10px] font-black">
+              الفريق والصلاحيات 👑
+            </span>
+          </div>
+          <span class="text-[11px] text-gray-400 font-medium">«تاريخٌ يُروى.. وحاضرٌ يُعاش»</span>
+        </div>
+      </div>
+      
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <a href="museum-plan.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-landmark-dome text-gold"></i>
+          <span>متحف السيرة وغرفة العمل</span>
+        </a>
+        <a href="pdr.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-diagram-project text-laser"></i>
+          <span>وثيقة PDR وغرفة الإنجاز</span>
+        </a>
+        <a href="index.html" class="nav-link text-xs font-semibold px-3 py-2 rounded-xl text-gray-400 hover:text-white transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-clapperboard text-gold"></i>
+          <span>الستوري بورد والتجربة</span>
+        </a>
+      </nav>
+
+      <!-- User Auth & Session Status -->
+      <div class="flex items-center gap-2.5">
+        <div id="admin-user-badge" class="px-3 py-1 rounded-full border border-gold/40 text-gold text-xs font-black flex items-center gap-1.5 bg-gold/15 shadow-sm">
+          <i class="fa-solid fa-crown"></i>
+          <span id="admin-user-name">مدير النظام</span>
+        </div>
+        <button id="btn-auth-logout" class="btn-global-logout px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-clay text-gray-300 hover:text-white border border-white/15 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="تسجيل الخروج">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>خروج</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Access Denied Banner (Rendered if non-admin accesses page) -->
+  <div id="access-denied-container" class="hidden max-w-2xl mx-auto my-auto p-8 rounded-3xl bg-black/80 border border-clay/50 shadow-2xl text-center flex-col items-center gap-5">
+    <div class="w-16 h-16 rounded-2xl bg-clay/20 border border-clay/40 flex items-center justify-center text-clay text-3xl mx-auto">
+      <i class="fa-solid fa-shield-slash"></i>
+    </div>
+    <div class="flex flex-col gap-2">
+      <h2 class="text-2xl font-black text-white">غير مصرح لك بالوصول</h2>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        هذه الصفحة مخصصة لمدير النظام الرئيسي (Admin) فقط لإدارة حسابات الفريق وتعيين الصلاحيات. حسابك الحالي لا يملك صلاحية المدير العام.
+      </p>
+    </div>
+    <div class="flex items-center gap-3 mt-2">
+      <a href="museum-plan.html" class="px-5 py-2.5 rounded-xl bg-gold text-black font-bold text-xs hover:bg-white transition-all">
+        العودة إلى دراسة المتحف
+      </a>
+      <button onclick="App.authGuard.logout()" class="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-bold transition-all">
+        تسجيل الدخول بحساب مدير
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Body (Visible to Admins only) -->
+  <main id="admin-main-content" class="flex-grow py-10">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col gap-8">
+
+      <!-- Hero Header -->
+      <div class="relative p-8 rounded-3xl bg-[radial-gradient(ellipse_at_top_right,rgba(223,177,91,0.15)_0%,rgba(8,10,19,0.95)_70%)] border border-gold/25 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden">
+        <div class="flex flex-col gap-2.5 max-w-2xl">
+          <div class="flex items-center gap-2">
+            <span class="badge bg-gold/15 text-gold border border-gold/30 text-xs px-3 py-1 font-bold">بوابة الإدارة المركزية وحوكمة الصلاحيات</span>
+            <span class="text-xs text-gray-400">نظام أمان موحد RBAC</span>
+          </div>
+          <h2 class="text-3xl font-black text-white">
+            فريق العمل، الأدوار، ومصفوفة الصلاحيات
+          </h2>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            تحكم كامل بإضافة أعضاء جدد لفريق مشروع متحف السيرة الأحسائية، وتحديد مستويات الوصول (مدير / محرر ومسؤول / استعراض فقط)، مع تعديل وحذف الحسابات وتحديث كلمات المرور.
+          </p>
+        </div>
+
+        <button id="btn-open-add-member" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-gold to-gold-dark hover:from-white hover:to-gold text-black font-black text-xs shadow-xl shadow-gold/20 flex items-center gap-2 transition-all cursor-pointer shrink-0">
+          <i class="fa-solid fa-user-plus text-sm"></i>
+          <span>إضافة عضو فريق جديد</span>
+        </button>
+      </div>
+
+      <!-- KPI Metrics Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-5 rounded-2xl bg-black/60 border border-white/10 flex items-center justify-between shadow-lg">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs text-gray-400 font-semibold">إجمالي أعضاء الفريق</span>
+            <strong id="stat-total-users" class="text-2xl font-black text-white font-mono">--</strong>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gold text-xl">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-black/60 border border-gold/30 flex items-center justify-between shadow-lg">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs text-gold font-semibold">مدراء النظام (Admins)</span>
+            <strong id="stat-admin-users" class="text-2xl font-black text-gold font-mono">--</strong>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-gold/15 border border-gold/30 flex items-center justify-center text-gold text-xl">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-black/60 border border-palm/30 flex items-center justify-between shadow-lg">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs text-palm font-semibold">المحررون والمسؤولون (Editors)</span>
+            <strong id="stat-editor-users" class="text-2xl font-black text-palm font-mono">--</strong>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-palm/15 border border-palm/30 flex items-center justify-center text-palm text-xl">
+            <i class="fa-solid fa-user-pen"></i>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-black/60 border border-laser/30 flex items-center justify-between shadow-lg">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs text-laser font-semibold">صلاحيات الاستعراض (Viewers)</span>
+            <strong id="stat-viewer-users" class="text-2xl font-black text-laser font-mono">--</strong>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-laser/15 border border-laser/30 flex items-center justify-center text-laser text-xl">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Search Toolbar -->
+      <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div class="relative flex-1 max-w-md">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input type="text" id="filter-user-search" placeholder="بحث بالاسم أو اسم المستخدم أو التخصص..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-black/80 border border-white/15 text-xs text-white outline-none focus:border-gold transition-all" />
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <button class="filter-role-btn active px-3.5 py-2 rounded-xl border border-gold text-xs font-bold text-gold bg-gold/15 transition-all whitespace-nowrap cursor-pointer" data-role="all">
+            الكل (<span id="count-all">0</span>)
+          </button>
+          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="admin">
+            👑 المدراء (<span id="count-admin">0</span>)
+          </button>
+          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="editor">
+            ✍️ المحررون (<span id="count-editor">0</span>)
+          </button>
+          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="viewer">
+            👁️ المستعرضون (<span id="count-viewer">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <!-- Team Members Table Card -->
+      <div class="rounded-3xl bg-black/60 border border-white/10 shadow-2xl overflow-hidden">
+        <div class="p-5 border-b border-white/10 flex items-center justify-between">
+          <h3 class="text-base font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-id-card-clip text-gold"></i>
+            <span>قائمة أعضاء الفريق وحساباتهم</span>
+          </h3>
+          <span class="text-xs text-gray-400">تحديث فوري ومتزامن مع قاعدة البيانات</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs">
+            <thead class="bg-white/[0.03] text-gray-400 border-b border-white/10 font-bold">
+              <tr>
+                <th class="p-4">العضو / الاسم الكامل</th>
+                <th class="p-4">اسم المستخدم (Username)</th>
+                <th class="p-4">المسار / التخصص</th>
+                <th class="p-4">مستوى الصلاحية</th>
+                <th class="p-4">تاريخ الإضافة</th>
+                <th class="p-4 text-center">الإجراءات والتحكم</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body" class="divide-y divide-white/5">
+              <!-- Populated dynamically via js/teamAdmin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Permissions Matrix Guide Card -->
+      <div class="p-6 rounded-3xl bg-black/60 border border-white/10 shadow-xl flex flex-col gap-4">
+        <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+          <i class="fa-solid fa-shield-halved text-gold text-lg"></i>
+          <h3 class="text-base font-black text-white">دليل حوكمة الصلاحيات (RBAC Privilege Matrix)</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-2xl bg-gold/5 border border-gold/30 flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-gold font-black text-sm">
+              <i class="fa-solid fa-crown"></i>
+              <span>👑 مدير النظام (Admin)</span>
+            </div>
+            <p class="text-gray-300 text-[11px] leading-relaxed">
+              كامل الصلاحيات المركزية: إضافة وتعديل وحذف مستخدمي المنظومة، إدارة النسخ الاحتياطية، حسم القرارات الاستراتيجية، تعديل كافة المحاور، والتصدير.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-palm/5 border border-palm/30 flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-palm font-black text-sm">
+              <i class="fa-solid fa-user-pen"></i>
+              <span>✍️ محرر ومسؤول (Editor)</span>
+            </div>
+            <p class="text-gray-300 text-[11px] leading-relaxed">
+              صلاحية العمل الميداني والتحرير: إضافة وتعديل وحذف المهام، مراجعة واعتماد بنود المتحف والـ PDR، تحرير المشاهد والمقتنيات، والمشاركة في مصفوفة القرارات.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-laser/5 border border-laser/30 flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-laser font-black text-sm">
+              <i class="fa-solid fa-eye"></i>
+              <span>👁️ استعراض فقط (Viewer)</span>
+            </div>
+            <p class="text-gray-300 text-[11px] leading-relaxed">
+              صلاحية اطلاع وقراءة: تصفح كافة التبويبات الـ 12، قراءة وثيقة PDR، استعراض محاكي الحواس، وتصدير التقارير دون إمكانية التعديل على البيانات الأصلية.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal: Create / Edit User & Permissions -->
+  <div id="user-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#0b0e1b] border border-gold/40 rounded-3xl w-full max-w-lg p-6 sm:p-8 shadow-2xl relative animate-fadeIn flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 id="user-modal-title" class="text-base font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-gold"></i>
+          <span>إضافة عضو فريق جديد</span>
+        </h3>
+        <button id="btn-close-user-modal" class="w-8 h-8 rounded-full bg-white/5 hover:bg-clay text-gray-400 hover:text-white flex items-center justify-center transition-all cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="form-user-manage" class="flex flex-col gap-4 text-xs">
+        <input type="hidden" id="user-edit-original-username" value="" />
+        <div id="user-modal-error" class="hidden p-3 rounded-xl bg-clay/20 border border-clay/40 text-clay text-xs font-bold text-center"></div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-bold text-gray-300">الاسم الكامل للعضو:</label>
+          <input type="text" id="input-user-name" required placeholder="مثال: د. عبد الله الأحسائي" class="bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-gold transition-all" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex flex-col gap-1.5">
+            <label class="font-bold text-gray-300">اسم المستخدم (Username):</label>
+            <input type="text" id="input-user-username" required placeholder="مثال: dr_abdullah" class="bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-gold transition-all" />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label class="font-bold text-gray-300">كلمة المرور / الرمز السري:</label>
+            <input type="password" id="input-user-password" placeholder="••••••••" class="bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-gold transition-all" />
+            <span id="password-hint" class="text-[10px] text-gray-400 hidden">اتركها فارغة للإبقاء على كلمة المرور السابقة</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-bold text-gray-300">المسار / التخصص الوظيفي:</label>
+          <input type="text" id="input-user-specialty" placeholder="مثال: بحوث السيرة النبوية والآثار، تقنية الواقع الافتراضي VR، إدارة المشاريع" class="bg-black/60 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-gold transition-all" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="font-bold text-gray-300">مستوى الصلاحية (Role & Privileges):</label>
+          <select id="select-user-role" class="bg-black/80 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-gold transition-all">
+            <option value="editor">✍️ محرر ومسؤول محتوى (Editor) — إضافة وتعديل المهام والقرارات والمحتوى</option>
+            <option value="admin">👑 مدير النظام (Admin) — كامل الصلاحيات وإدارة المستخدمين والنسخ</option>
+            <option value="viewer">👁️ استعراض فقط (Viewer) — تصفح المنظومة وتصدير التقارير دون تعديل</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+          <button type="button" id="btn-cancel-user-modal" class="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-bold cursor-pointer">إلغاء</button>
+          <button type="submit" id="btn-submit-user-manage" class="px-6 py-2.5 rounded-xl bg-gold text-black hover:bg-white text-xs font-black shadow-md shadow-gold/20 flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-check"></i>
+            <span>حفظ المستخدم</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-darkerBg border-t border-white/6 py-8 text-center mt-16 text-xs text-gray-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-2">
+      <p>مشروع متحف السيرة الأحسائية وثيقة PDR © 2026. بوابة الإدارة المركزية وحوكمة الفريق.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/authGuard.js"></script>
+  <script src="js/detailedPlanData.js"></script>
+  <script src="js/pdrData.js"></script>
+  <script src="js/teamAdmin.js"></script>
+  <script src="js/platformNav.js"></script>
+  <script src="js/executiveReportGenerator.js"></script>
+</body>
+</html>

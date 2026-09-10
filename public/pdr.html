@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سراج الأحساء — وثيقة PDR وغرفة العمل | تاريخٌ يُروى وحاضرٌ يُعاش</title>
+  <link rel="icon" type="image/png" href="uploads/seraj_logo.png">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Cairo (Arabic) & Outfit (Latin/Numbers) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Core Design Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              DEFAULT: '#dfb15b',
+              dark: '#a17834',
+              glow: 'rgba(223, 177, 91, 0.6)',
+            },
+            laser: '#00ebd4',
+            palm: '#2ec866',
+            clay: '#cc6e55',
+            darkBg: '#080a13',
+            darkerBg: '#04050a',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body id="pdr-page-root" class="bg-darkBg text-gray-200 overflow-x-hidden font-['Cairo'] min-h-screen flex flex-col justify-between">
+
+  <!-- Ambient Audio Indicator & Sound Toggle (Hidden) -->
+  <div class="hidden fixed bottom-6 left-6 z-50 items-center gap-3 py-2.5 px-4 rounded-full bg-black/85 border border-gold/30 shadow-lg shadow-gold/10 backdrop-blur-md" id="audio-bar-container">
+    <div class="flex items-end gap-0.5 w-5 h-4" id="global-audio-waves">
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+      <span class="w-[2px] h-[20%] bg-gold rounded transition-all duration-200"></span>
+    </div>
+    <span class="text-xs font-semibold text-gray-400">التأثيرات التفاعلية</span>
+    <button id="btn-toggle-audio" class="w-8 h-8 rounded-full bg-gold/10 border border-gold/30 text-gold flex items-center justify-center hover:bg-gold hover:text-black transition-all duration-200" title="تشغيل/إيقاف الصوت">
+      <i class="fas fa-volume-high text-xs"></i>
+    </button>
+  </div>
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-gold/25 py-3">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Project Title -->
+      <div class="relative flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold/30 to-gold-dark/20 border border-gold/40 flex items-center justify-center text-gold text-xl shadow-lg shadow-gold/10">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-black bg-gradient-to-r from-white via-gold to-gold-dark bg-clip-text text-fill-transparent">
+              سِـرَاج الأَحْـسَـاء
+            </h1>
+            <span class="px-2 py-0.5 rounded-full bg-gold/20 text-gold border border-gold/40 text-[10px] font-black">
+              وثيقة PDR وغرفة الإنجاز 📊
+            </span>
+          </div>
+          <span class="text-[11px] text-gray-400 font-medium">«تاريخٌ يُروى.. وحاضرٌ يُعاش»</span>
+        </div>
+      </div>
+      
+      <!-- Main Universal Nav Links -->
+      <nav class="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
+        <a href="index.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-clapperboard text-gold"></i>
+          <span>الستوري بورد والتجربة</span>
+        </a>
+        <a href="museum-plan.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-landmark-dome text-gold"></i>
+          <span>دراسة المتحف</span>
+        </a>
+        <a href="pdr.html" class="nav-link text-xs font-black px-3.5 py-2 rounded-xl text-gold bg-gold/15 border border-gold/40 shadow-sm flex items-center gap-1.5 active">
+          <i class="fa-solid fa-diagram-project text-laser"></i>
+          <span>وثيقة PDR</span>
+        </a>
+        
+        <a href="notes-kanban.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gray-300 bg-white/5 border border-white/10 hover:border-gold hover:text-gold transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-clipboard-check text-laser"></i>
+          <span>الملاحظات والتدقيق 📋</span>
+        </a>
+        <a href="team-admin.html" class="nav-link text-xs font-bold px-3.5 py-2 rounded-xl text-gold bg-gold/10 border border-gold/30 hover:bg-gold hover:text-black transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>الفريق والصلاحيات 👑</span>
+        </a>
+      </nav>
+
+      <!-- Action Tools: Quick Navigator + Session Status -->
+      <div class="flex items-center gap-2">
+        <button class="btn-open-omni-navigator px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-gold to-gold-dark hover:from-white hover:to-gold text-black font-black text-xs flex items-center gap-1.5 shadow-md shadow-gold/20 transition-all cursor-pointer" title="دليل المنصة والبحث السريع (Ctrl+K)">
+          <i class="fa-solid fa-bolt"></i>
+          <span>دليل المنصة ⚡</span>
+        </button>
+
+        <div id="auth-role-badge" class="px-3 py-1 rounded-full border border-gold/30 text-gold text-xs font-black hidden sm:flex items-center gap-1.5 bg-gold/10">
+          <i class="fa-solid fa-user-shield"></i>
+          <span>عضو فريق مصرح</span>
+        </div>
+
+        <button id="btn-auth-logout" class="btn-global-logout px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-clay text-gray-300 hover:text-white border border-white/15 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="تسجيل الخروج">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>خروج</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Global Project Stats & Control Hub -->
+  <section class="bg-black/60 border-b border-white/10 py-3.5">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Live Sync Status & Overview Tag -->
+      <div class="flex items-center gap-3">
+        <div id="server-sync-indicator" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-palm/15 border border-palm/30 text-palm text-xs font-bold">
+          <i class="fa-solid fa-cloud-check text-xs"></i>
+          <span>متزامن مع السيرفر</span>
+        </div>
+        <span class="text-xs text-gray-400 hidden sm:inline" id="pdr-sections-count-label">17 قسماً رئيسياً • 6 ملاحق تشغيلية</span>
+      </div>
+
+      <!-- Live Counters Grid -->
+      <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-gray-400">إجمالي البنود:</span>
+          <span id="stat-total-items" class="font-mono font-black text-white text-sm">--</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-palm font-bold">المكتمل والمعتمد:</span>
+          <span id="stat-approved-items" class="font-mono font-black text-palm text-sm">--</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-gold font-bold">قيد العمل:</span>
+          <span id="stat-inprogress-items" class="font-mono font-black text-gold text-sm">--</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-laser font-bold">للمراجعة:</span>
+          <span id="stat-review-items" class="font-mono font-black text-laser text-sm">--</span>
+        </div>
+        
+        <!-- Overall Progress Ring / Bar -->
+        <div class="flex items-center gap-2.5 pr-2 sm:border-r border-white/10">
+          <span class="text-gray-300 font-bold">الإنجاز الكلي:</span>
+          <div class="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
+            <div id="stat-overall-progress-bar" class="h-full bg-gradient-to-r from-gold to-laser rounded-full transition-all duration-700" style="width: 0%;"></div>
+          </div>
+          <span id="stat-overall-progress" class="font-mono font-black text-gold text-sm">0%</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- View Switcher Navigation Bar -->
+  <section class="sticky top-[69px] z-30 bg-darkBg/95 backdrop-blur-md border-b border-white/10 py-2.5">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-start gap-2 overflow-x-auto no-scrollbar">
+      
+      <!-- Tab 1: Matrix 4x4 View -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 active shrink-0 cursor-pointer" data-pdr-view="matrix">
+        <i class="fa-solid fa-border-all"></i>
+        <span>مصفوفة الأقسام الـ 17</span>
+      </button>
+
+      <!-- Tab 2: Detailed Workroom View -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 shrink-0 cursor-pointer" data-pdr-view="detailed">
+        <i class="fa-solid fa-list-check"></i>
+        <span>غرفة العمل وتفاصيل البنود والتعيين</span>
+      </button>
+
+      <!-- Tab 3: Studio & Deliverables Workbench (NEW) -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 shrink-0 cursor-pointer" data-pdr-view="studio">
+        <i class="fa-solid fa-laptop-code text-gold"></i>
+        <span>استوديو إنجاز المخرجات وبيئة العمل ⚡</span>
+      </button>
+
+      <!-- Tab 4: Kanban Board View -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 shrink-0 cursor-pointer" data-pdr-view="kanban">
+        <i class="fa-solid fa-table-columns"></i>
+        <span>لوحة كانبان الإنجاز</span>
+      </button>
+
+      <!-- Tab 5: Interactive Visualizers & Charts -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 shrink-0 cursor-pointer" data-pdr-view="charts">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>التحليلات والمخططات (SWOT & KPIs)</span>
+      </button>
+
+      <!-- Tab 6: Printable Report View -->
+      <button class="pdr-view-nav-btn px-4 py-2 rounded-xl text-xs font-black border transition-all flex items-center gap-2 shrink-0 cursor-pointer" data-pdr-view="report">
+        <i class="fa-solid fa-file-pdf"></i>
+        <span>التقرير التنفيذي للطباعة</span>
+      </button>
+
+      <!-- Export as Word Document (.doc / .docx) -->
+      <button onclick="window.App && window.App.exportPdrToWord ? window.App.exportPdrToWord() : null" class="btn-export-pdr-word px-4 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white hover:from-white hover:to-blue-200 hover:text-black transition-all flex items-center gap-2 shrink-0 cursor-pointer shadow-md shadow-blue-500/20 border border-blue-400/30" title="تصدير وثيقة PDR بالكامل كملف Word منسق وقابل للتعديل">
+        <i class="fa-solid fa-file-word text-sm"></i>
+        <span>تصدير ملف Word (.doc) 📄✨</span>
+      </button>
+
+      <!-- Tab 7: Executive Generator Modal Quick Launcher -->
+      <button onclick="window.App && window.App.openExecutiveGenerator ? window.App.openExecutiveGenerator('pdr_technical') : null" class="btn-open-executive-generator px-4 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-gold to-gold-dark text-black hover:from-white hover:to-gold transition-all flex items-center gap-2 shrink-0 cursor-pointer shadow-md shadow-gold/20" title="توليد العرض التنفيذي والشرائح وملف PDF الفوري">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span>العرض التنفيذي و PDF 📊✨</span>
+      </button>
+
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow py-8 sm:py-10 pb-36">
+    <div class="max-w-7xl mx-auto px-4" id="pdr-content-area">
+      <!-- Injected dynamically by pdrView.js -->
+    </div>
+  </main>
+
+  <!-- Modal Dialogues Container -->
+  <div id="pdr-modal-root" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" id="pdr-modal-backdrop"></div>
+    <div class="relative w-full max-w-2xl bg-darkerBg border border-gold/40 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-gold/10 z-10 max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
+        <h3 id="pdr-modal-title" class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+          <!-- Injected dynamically -->
+        </h3>
+        <button id="btn-close-pdr-modal" class="w-8 h-8 rounded-full bg-white/5 hover:bg-clay text-gray-400 hover:text-white flex items-center justify-center transition-all cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="pdr-modal-form" class="space-y-5">
+        <div id="pdr-modal-form-fields" class="space-y-4">
+          <!-- Injected dynamically -->
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="document.getElementById('pdr-modal-root').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-bold transition-all cursor-pointer">
+            إلغاء
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-gold hover:bg-white text-black font-black text-xs transition-all shadow-lg shadow-gold/20 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-check"></i>
+            <span>حفظ وتأكيد التعديلات</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="pdr-live-toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-2xl bg-black/90 border border-gold/50 text-gold text-xs font-black shadow-2xl backdrop-blur-md transition-all duration-300 pointer-events-none opacity-0 translate-y-4">
+    <!-- Populated dynamically -->
+  </div>
+
+  <!-- System Scripts (Data -> Model -> View -> Controller -> Nav -> Word Exporter) -->
+  <script src="js/pdrData.js"></script>
+  <script src="js/pdrModel.js"></script>
+  <script src="js/pdrWordExporter.js"></script>
+  <script src="js/views/pdrView.js"></script>
+  <script src="js/pdrController.js"></script>
+  <script src="js/platformNav.js"></script>
+  <script src="js/executiveReportGenerator.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      window.App = window.App || {};
+      const model = new App.PdrModel();
+      const view = new App.PdrView();
+      const controller = new App.PdrController(model, view);
+      controller.init();
+      App.pdrController = controller;
+      App.pdrModel = model;
+      App.pdrView = view;
+    });
+  </script>
+
+</body>
+</html>
