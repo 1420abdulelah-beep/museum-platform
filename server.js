@@ -704,13 +704,21 @@ const requestHandler = async (req, res) => {
   }
 
   // 11. Static Files Serving
-  if (reqUrl === '/') reqUrl = '/index.html';
+  if (reqUrl === '' || reqUrl === '/') reqUrl = '/index.html';
 
-  let filePath = path.join(__dirname, reqUrl);
+  const cleanReq = reqUrl.split('?')[0].replace(/^\/+/, '');
+  const candidatePaths = [
+    path.join(__dirname, cleanReq),
+    path.join(process.cwd(), cleanReq),
+    path.join(__dirname, '..', cleanReq)
+  ];
 
-  // Fallback: If no extension provided, check if .html file exists
-  if (!path.extname(reqUrl) && fs.existsSync(filePath + '.html')) {
-    filePath = filePath + '.html';
+  let filePath = candidatePaths.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  if (!filePath && !path.extname(cleanReq)) {
+    filePath = candidatePaths.map(p => p + '.html').find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  }
+  if (!filePath) {
+    filePath = path.join(__dirname, cleanReq);
   }
 
   fs.stat(filePath, (err, stats) => {
