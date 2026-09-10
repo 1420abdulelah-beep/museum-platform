@@ -2,7 +2,6 @@
   "name": "museum-interactive-app",
   "version": "1.0.0",
   "description": "Interactive Museum & Canvas Web Application deployed on AWS Elastic Beanstalk",
-  "main": "server.js",
   "scripts": {
     "build": "node ./scripts/prepare-public.js",
     "start": "node server.js",

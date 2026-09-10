@@ -710,7 +710,10 @@ const requestHandler = async (req, res) => {
   const candidatePaths = [
     path.join(__dirname, cleanReq),
     path.join(process.cwd(), cleanReq),
-    path.join(__dirname, '..', cleanReq)
+    path.join(__dirname, 'public', cleanReq),
+    path.join(process.cwd(), 'public', cleanReq),
+    path.join(__dirname, '..', cleanReq),
+    path.join(__dirname, '..', 'public', cleanReq)
   ];
 
   let filePath = candidatePaths.find(p => {
