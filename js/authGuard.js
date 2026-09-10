@@ -14,103 +14,52 @@ window.App = window.App || {};
       this.currentUser = this.loadSession();
       this.offlineUsers = [
         {
-                "id": "usr_admin_1",
                 "username": "admin",
-                "name": "مدير النظام الرئيسي",
-                "password": "admin2026",
+                "name": "بوعبدالله",
                 "role": "admin",
-                "specialty": "الإدارة العامة والحوكمة والصلاحيات",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "admin2026"
         },
         {
-                "id": "usr_dr_mubarak",
-                "username": "dr_mubarak",
-                "name": "د. عبد المحسن المبارك",
-                "password": "pass1234",
-                "role": "admin",
-                "specialty": "مدير المشروع والمشرف العام",
-                "createdAt": "2026-08-28T12:00:00.000Z"
-        },
-        {
-                "id": "usr_editor_1",
-                "username": "editor",
-                "name": "محرر ومسؤول المحتوى والمهام",
-                "password": "editor2026",
+                "username": "Osamah",
+                "name": "أسامة السيد",
                 "role": "editor",
-                "specialty": "إعداد المحتوى والمشاهد والمقتنيات",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_researcher_1",
-                "username": "researcher1",
-                "name": "د. خالد الأحسائي",
-                "password": "123456",
+                "username": "abdulrahman",
+                "name": "عبدالرحمن السيد",
                 "role": "editor",
-                "specialty": "بحوث السيرة النبوية وتاريخ الأحساء والمسار الشرعي",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_sara_q",
-                "username": "sara_q",
-                "name": "أ. سارة القحطاني",
-                "password": "pass1234",
+                "username": "Thamer",
+                "name": "ثامر",
                 "role": "editor",
-                "specialty": "رئيسة قسم المحتوى والبحث التاريخي",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_eng_salim",
-                "username": "eng_salim",
-                "name": "م. عبد العزيز السليم",
-                "password": "pass1234",
+                "username": "Anas",
+                "name": "أنس",
                 "role": "editor",
-                "specialty": "مدير التقنية والتجهيزات المتنقلة والهندسة",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_fatima_m",
-                "username": "fatima_m",
-                "name": "أ. فاطمة الملا",
-                "password": "pass1234",
+                "username": "BuOmer",
+                "name": "بوعمر",
                 "role": "editor",
-                "specialty": "مديرة الاتصال والبرامج وتجربة الزائر",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_fahad_r",
-                "username": "fahad_r",
-                "name": "م. فهد الراشد",
-                "password": "pass1234",
+                "username": "Ahmed",
+                "name": "الضياء",
                 "role": "editor",
-                "specialty": "مهندس التصميم الإنشائي والديكور والعمليات",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "password": "123456"
         },
         {
-                "id": "usr_m_issa",
-                "username": "m_issa",
-                "name": "أ. محمد العيسى",
-                "password": "pass1234",
-                "role": "editor",
-                "specialty": "مدير العمليات واللوجستيات والميدان والشراكات",
-                "createdAt": "2026-08-28T12:00:00.000Z"
-        },
-        {
-                "id": "usr_noura_j",
-                "username": "noura_j",
-                "name": "أ. نورة الجبر",
-                "password": "pass1234",
-                "role": "editor",
-                "specialty": "أخصائية البرامج التعليمية وتجربة الزائر والاتصال",
-                "createdAt": "2026-08-28T12:00:00.000Z"
-        },
-        {
-                "id": "usr_k_dosari",
-                "username": "k_dosari",
-                "name": "أ. خالد الدوسري",
-                "password": "pass1234",
-                "role": "editor",
-                "specialty": "المسؤول المالي وإدارة المخاطر والسلامة",
-                "createdAt": "2026-08-28T12:00:00.000Z"
+                "username": "Designer",
+                "name": "مصمم",
+                "role": "viewer",
+                "password": "123456"
         }
 ];
     }
