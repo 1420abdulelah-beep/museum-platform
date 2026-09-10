@@ -163,9 +163,14 @@ App.TeamAdmin = class {
       }
       if (!this.users || this.users.length === 0) {
         this.users = [
-          { id: "usr_admin_1", username: "admin", name: "مدير النظام الرئيسي", role: "admin", specialty: "إدارة وتنسيق المشروع العام", createdAt: "2026-08-28T12:00:00.000Z" },
-          { id: "usr_editor_1", username: "editor", name: "محرر ومسؤول المحتوى", role: "editor", specialty: "إعداد المحتوى والمشاهد والمقتنيات", createdAt: "2026-08-28T12:00:00.000Z" },
-          { id: "usr_researcher_1", username: "researcher1", name: "د. خالد الأحسائي", role: "editor", specialty: "بحوث السيرة النبوية وتاريخ الأحساء", createdAt: "2026-08-28T12:00:00.000Z" }
+          { id: "usr_admin_1", username: "admin", name: "بوعبدالله", role: "admin", specialty: "الإدارة العامة والحوكمة والصلاحيات", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1787942767795", username: "Osamah", name: "أسامة السيد", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788007621889", username: "abdulrahman", name: "عبدالرحمن السيد", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788008791106", username: "Thamer", name: "ثامر", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788008824238", username: "Anas", name: "أنس", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788009069735", username: "BuOmer", name: "بوعمر", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788009174068", username: "Ahmed", name: "الضياء", role: "editor", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" },
+          { id: "usr_1788723464990", username: "Designer", name: "مصمم", role: "viewer", specialty: "عضو فريق", createdAt: "2026-08-28T12:00:00.000Z" }
         ];
       }
     }

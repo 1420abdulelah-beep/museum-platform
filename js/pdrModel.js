@@ -103,10 +103,15 @@ App.PdrModel = class {
       return { success: true, user: this.currentUser };
     } catch (e) {
       console.warn("PDR login server unreachable, trying offline credentials:", e.message);
-      const offlineUsers = [
-        { username: "admin", name: "مدير النظام الرئيسي", role: "admin", password: "admin2026" },
-        { username: "editor", name: "محرر المحتوى والمهام", role: "editor", password: "editor2026" },
-        { username: "researcher1", name: "د. خالد الأحسائي", role: "editor", password: "pass1234" }
+      const offlineUsers = (window.App && window.App.authGuard && window.App.authGuard.offlineUsers) || [
+        { username: "admin", name: "بوعبدالله", role: "admin", password: "admin2026" },
+        { username: "Osamah", name: "أسامة السيد", role: "editor", password: "123456" },
+        { username: "abdulrahman", name: "عبدالرحمن السيد", role: "editor", password: "123456" },
+        { username: "Thamer", name: "ثامر", role: "editor", password: "123456" },
+        { username: "Anas", name: "أنس", role: "editor", password: "123456" },
+        { username: "BuOmer", name: "بوعمر", role: "editor", password: "123456" },
+        { username: "Ahmed", name: "الضياء", role: "editor", password: "123456" },
+        { username: "Designer", name: "مصمم", role: "viewer", password: "123456" }
       ];
       const matched = offlineUsers.find(u => u.username.toLowerCase() === cleanUser && u.password === cleanPass);
       if (matched) {

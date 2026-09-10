@@ -89,16 +89,14 @@ App.NotesKanban = class {
     }
 
     return [
-      { id: "admin", name: "مدير النظام الرئيسي", role: "مدير النظام", avatar: "👑" },
-      { id: "dr_mubarak", name: "د. عبد المحسن المبارك", role: "المشرف العام ومدير المشروع", avatar: "👨‍💼" },
-      { id: "sara_q", name: "أ. سارة القحطاني", role: "رئيسة قسم المحتوى والبحث التاريخي", avatar: "👩‍🏫" },
-      { id: "eng_salim", name: "م. عبد العزيز السليم", role: "مدير التقنية والتجهيزات المتنقلة", avatar: "👨‍💻" },
-      { id: "researcher1", name: "د. خالد الأحسائي", role: "رئيس المسار الشرعي والتوثيق", avatar: "👨‍🏫" },
-      { id: "fatima_m", name: "أ. فاطمة الملا", role: "مديرة الاتصال والبرامج وتجربة الزائر", avatar: "👩‍💼" },
-      { id: "fahad_r", name: "م. فهد الراشد", role: "مهندس التصميم الإنشائي والعمليات", avatar: "👷‍♂️" },
-      { id: "m_issa", name: "أ. محمد العيسى", role: "مدير العمليات واللوجستيات والميدان", avatar: "🚚" },
-      { id: "noura_j", name: "أ. نورة الجبر", role: "أخصائية البرامج التعليمية وتجربة الزائر", avatar: "👩‍🔬" },
-      { id: "k_dosari", name: "أ. خالد الدوسري", role: "المسؤول المالي وإدارة المخاطر", avatar: "📊" }
+      { id: "admin", name: "بوعبدالله", role: "الإدارة العامة والحوكمة والصلاحيات", avatar: "👑" },
+      { id: "Osamah", name: "أسامة السيد", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "abdulrahman", name: "عبدالرحمن السيد", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "Thamer", name: "ثامر", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "Anas", name: "أنس", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "BuOmer", name: "بوعمر", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "Ahmed", name: "الضياء", role: "عضو فريق", avatar: "👨‍💼" },
+      { id: "Designer", name: "مصمم", role: "عضو فريق", avatar: "🎨" }
     ];
   }
 

@@ -67,7 +67,15 @@ const getPgConfig = () => {
     };
   }
 
-  return null;
+  // 3. Resilient production fallback to Supabase cloud instance
+  return {
+    host: 'db.htznmeemcenghbidxgxb.supabase.co',
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'Sayedaly@1420',
+    ssl: { rejectUnauthorized: false }
+  };
 };
 
 // Initialize schema and seed data into PostgreSQL
