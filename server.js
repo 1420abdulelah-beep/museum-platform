@@ -713,12 +713,16 @@ const requestHandler = async (req, res) => {
     path.join(__dirname, '..', cleanReq)
   ];
 
-  let filePath = candidatePaths.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  let filePath = candidatePaths.find(p => {
+    try { return fs.existsSync(p) && fs.statSync(p).isFile(); } catch (_) { return false; }
+  });
   if (!filePath && !path.extname(cleanReq)) {
-    filePath = candidatePaths.map(p => p + '.html').find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+    filePath = candidatePaths.map(p => p + '.html').find(p => {
+      try { return fs.existsSync(p) && fs.statSync(p).isFile(); } catch (_) { return false; }
+    });
   }
   if (!filePath) {
-    filePath = path.join(__dirname, cleanReq);
+    filePath = candidatePaths[0];
   }
 
   fs.stat(filePath, (err, stats) => {

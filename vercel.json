@@ -1,31 +1,17 @@
 {
   "version": 2,
-  "cleanUrls": false,
-  "trailingSlash": false,
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "**"
-    }
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/health",
-      "dest": "/api/index.js"
+      "source": "/health",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/healthcheck",
-      "dest": "/api/index.js"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/healthcheck",
+      "destination": "/api/index.js"
     }
   ]
 }
