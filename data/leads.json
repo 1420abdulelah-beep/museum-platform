@@ -1,0 +1,14 @@
+[
+  {
+    "id": "lead_1787934289989",
+    "email": "visitor@example.com",
+    "receivedAt": "2026-08-28T16:24:49.989Z"
+  },
+  {
+    "id": "lead_1787936106053",
+    "name": "زائر تجريبي",
+    "email": "visitor@test.com",
+    "type": "booklet_download",
+    "receivedAt": "2026-08-28T16:55:06.053Z"
+  }
+]

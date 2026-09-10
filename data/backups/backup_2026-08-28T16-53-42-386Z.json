@@ -1,0 +1,46 @@
+{
+  "id": "bk_1787936022386",
+  "filename": "backup_2026-08-28T16-53-42-386Z.json",
+  "timestamp": "2026-08-28T16:53:42.387Z",
+  "type": "manual",
+  "note": "نسخة قبل التعديل التجريبي",
+  "data": {
+    "database": {
+      "title": "الخطة التأسيسية الأصلية 2026"
+    },
+    "users": [
+      {
+        "id": "usr_admin_1",
+        "username": "admin",
+        "name": "مدير النظام الرئيسي",
+        "password": "admin2026",
+        "role": "admin",
+        "createdAt": "2026-08-28T16:41:26.849Z"
+      },
+      {
+        "id": "usr_editor_1",
+        "username": "editor",
+        "name": "محرر المحتوى والمهام",
+        "password": "editor2026",
+        "role": "editor",
+        "createdAt": "2026-08-28T16:41:26.864Z"
+      },
+      {
+        "id": "usr_1787935288363",
+        "username": "researcher1",
+        "password": "pass1234",
+        "name": "د. خالد الأحسائي",
+        "role": "editor",
+        "createdAt": "2026-08-28T16:41:28.363Z",
+        "updatedAt": "2026-08-28T16:41:43.461Z"
+      }
+    ],
+    "leads": [
+      {
+        "id": "lead_1787934289989",
+        "email": "visitor@example.com",
+        "receivedAt": "2026-08-28T16:24:49.989Z"
+      }
+    ]
+  }
+}

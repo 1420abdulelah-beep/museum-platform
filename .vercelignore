@@ -1,0 +1,10 @@
+.git
+.ebextensions
+.ebignore
+Procfile
+deploy.zip
+deploy_temp_staging
+build-zip.ps1
+AWS_DEPLOYMENT_GUIDE.md
+*.log
+.env.local

@@ -1,0 +1,30 @@
+{
+  "name": "museum-interactive-app",
+  "version": "1.0.0",
+  "description": "Interactive Museum & Canvas Web Application deployed on AWS Elastic Beanstalk",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "migrate:supabase": "node ./scripts/migrate-to-supabase.js",
+    "migrate:aws-to-supabase": "node ./scripts/migrate-aws-to-supabase.js",
+    "test:supabase": "node ./scripts/test_db_layer.js",
+    "build-zip": "powershell -ExecutionPolicy Bypass -File ./build-zip.ps1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "museum",
+    "interactive",
+    "canvas",
+    "aws",
+    "elasticbeanstalk"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.23.0"
+  }
+}
