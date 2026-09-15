@@ -150,7 +150,18 @@ App.TeamAdmin = class {
       });
       const data = await res.json();
       if (res.ok && data.status === "success" && Array.isArray(data.users)) {
-        this.users = data.users;
+        const saved = localStorage.getItem("seraj_users_list_v1");
+        let localUsers = [];
+        if (saved) {
+          try { localUsers = JSON.parse(saved); } catch (_) {}
+        }
+        if (localUsers.length > data.users.length) {
+          const serverUsernames = new Set(data.users.map(u => (u.username || '').toLowerCase()));
+          const newLocalUsers = localUsers.filter(u => !serverUsernames.has((u.username || '').toLowerCase()));
+          this.users = [...data.users, ...newLocalUsers];
+        } else {
+          this.users = data.users;
+        }
         localStorage.setItem("seraj_users_list_v1", JSON.stringify(this.users));
       } else {
         throw new Error(data.message || "Failed to fetch from server");

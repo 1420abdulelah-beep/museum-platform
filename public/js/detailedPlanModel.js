@@ -333,6 +333,19 @@ App.DetailedPlanModel = class {
       const json = await res.json();
       if (json.status === "success" && json.data && typeof json.data === "object" && json.data.metadata && json.data.intro) {
         const defaultData = JSON.parse(JSON.stringify(App.DetailedPlanData || {}));
+
+        // Conflict resolution: protect local edits from being overwritten if newer than server
+        const serverUpdatedAt = json.data.updatedAt ? new Date(json.data.updatedAt).getTime() : 0;
+        const localUpdatedAt = (this.data && this.data.updatedAt) ? new Date(this.data.updatedAt).getTime() : 0;
+
+        if (localUpdatedAt > serverUpdatedAt && (localUpdatedAt - serverUpdatedAt) > 1500) {
+          console.log("⚡ [Cloud Sync] Local edits are newer than server. Preserving local edits and re-syncing to cloud.");
+          this.saveToServer();
+          this.serverSyncStatus = "saved";
+          if (typeof onSuccess === "function") onSuccess(this.data);
+          return;
+        }
+
         this.data = {
           ...defaultData,
           ...json.data,
@@ -377,6 +390,9 @@ App.DetailedPlanModel = class {
       console.warn("⚠️ [DetailedPlanModel] Save blocked: account has Viewer (read-only) permissions.");
       return false;
     }
+    // Update modified timestamp
+    this.data.updatedAt = new Date().toISOString();
+
     // 1. Instant local persistence (with safe fallback)
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.data));
@@ -400,6 +416,7 @@ App.DetailedPlanModel = class {
     try {
       this.serverSyncStatus = "syncing";
       const token = this.currentUser ? (this.currentUser.token || "client_sync") : "client_sync";
+      this.data.updatedAt = new Date().toISOString();
       const payloadStr = JSON.stringify(this.data);
       
       const res = await fetch("/api/plan", {
@@ -418,12 +435,12 @@ App.DetailedPlanModel = class {
         return true;
       } else {
         console.warn("⚠️ [Cloud Sync] Server responded with warning:", json);
-        this.serverSyncStatus = "saved";
-        return true;
+        this.serverSyncStatus = "error";
+        return false;
       }
     } catch (e) {
       console.warn("⚠️ [Cloud Sync] Server offline or network warning:", e);
-      this.serverSyncStatus = "saved";
+      this.serverSyncStatus = "offline";
       return false;
     }
   }

@@ -201,6 +201,19 @@ App.PdrModel = class {
         const responseData = await res.json();
         if (responseData.status === "success" && responseData.data && Array.isArray(responseData.data.sections) && responseData.data.sections.length > 0) {
           const srvData = responseData.data;
+
+          // Conflict resolution: protect local edits from being overwritten if newer than server
+          const serverUpdated = (srvData.metadata && srvData.metadata.lastUpdated) ? new Date(srvData.metadata.lastUpdated).getTime() : 0;
+          const localUpdated = (this.data && this.data.metadata && this.data.metadata.lastUpdated) ? new Date(this.data.metadata.lastUpdated).getTime() : 0;
+
+          if (localUpdated > serverUpdated && (localUpdated - serverUpdated) > 1500) {
+            console.log("⚡ [PDR] Local edits are newer than server. Preserving local state and pushing to cloud.");
+            this.syncToServer();
+            this.serverSyncStatus = "saved";
+            if (typeof callback === "function") callback(this.data);
+            return;
+          }
+
           // Merge any missing default sections (like Section 17)
           if (App.PdrData && Array.isArray(App.PdrData.sections)) {
             App.PdrData.sections.forEach(defSec => {
@@ -227,6 +240,9 @@ App.PdrModel = class {
   }
 
   saveToLocalStorage() {
+    if (!this.data) return;
+    if (!this.data.metadata) this.data.metadata = {};
+    this.data.metadata.lastUpdated = new Date().toISOString();
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.data));
     } catch (e) {

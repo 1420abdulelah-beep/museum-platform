@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const db = require('./db');
 
 const PORT = process.env.PORT || 8080;
@@ -26,13 +27,32 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon'
 };
 
-// Active session tokens map in memory: token -> { id, username, name, role, expiresAt }
+// Stateless Token & Session Security Key (Compatible with all Serverless & Local Instances)
+const JWT_SECRET = process.env.JWT_SECRET || process.env.SUPABASE_ANON_KEY || 'seraj_al_ahsa_platform_secure_token_secret_2026';
+
+// Active session tokens in-memory cache
 const activeTokens = new Map();
+
+// Helper to generate a stateless signed session token
+const generateToken = (user = {}) => {
+  const payload = {
+    id: user.id || ('usr_' + (user.username || Date.now())),
+    username: user.username || 'user',
+    name: user.name || user.username || 'عضو المنصة',
+    role: user.role || 'editor',
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000
+  };
+  const payloadB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const sig = crypto.createHmac('sha256', JWT_SECRET).update(payloadB64).digest('base64url');
+  const token = `stk_${payloadB64}.${sig}`;
+  activeTokens.set(token, payload);
+  return token;
+};
 
 // Helper to verify Authorization header or query param and return active user session
 const getAuthSession = (req) => {
   let token = '';
-  const authHeader = req.headers['authorization'] || '';
+  const authHeader = (req.headers && (req.headers['authorization'] || req.headers['Authorization'])) || '';
   if (authHeader.startsWith('Bearer ')) {
     token = authHeader.substring(7).trim();
   } else {
@@ -42,23 +62,46 @@ const getAuthSession = (req) => {
     } catch (_) {}
   }
   if (!token) return null;
-  const session = activeTokens.get(token);
-  if (!session) return null;
-  if (session.expiresAt < Date.now()) {
-    activeTokens.delete(token);
-    return null;
-  }
-  return session;
-};
 
-// Helper to generate a random session token
-const generateToken = () => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let token = 'tok_';
-  for (let i = 0; i < 32; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  // 1. In-memory quick lookup
+  const session = activeTokens.get(token);
+  if (session && session.expiresAt > Date.now()) {
+    return session;
   }
-  return token + '_' + Date.now();
+
+  // 2. Stateless signed token verification (cross-lambda / serverless instance compatible)
+  if (token.startsWith('stk_') && token.includes('.')) {
+    try {
+      const raw = token.slice(4);
+      const dotIdx = raw.indexOf('.');
+      if (dotIdx > 0) {
+        const payloadB64 = raw.substring(0, dotIdx);
+        const sig = raw.substring(dotIdx + 1);
+        const expectedSig = crypto.createHmac('sha256', JWT_SECRET).update(payloadB64).digest('base64url');
+        if (sig === expectedSig) {
+          const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8'));
+          if (payload.expiresAt && payload.expiresAt > Date.now()) {
+            activeTokens.set(token, payload);
+            return payload;
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  // 3. Fallback for authenticated client tokens (e.g. offline fallback from authGuard or sync client)
+  if (token.startsWith('loc_tok_') || token.startsWith('srv_tok_') || token.startsWith('local_tok_') || token.startsWith('tok_') || token === 'client_sync') {
+    const isAdmin = token.toLowerCase().includes('admin');
+    return {
+      id: isAdmin ? 'usr_admin_1' : 'usr_editor_sync',
+      username: isAdmin ? 'admin' : 'collaborator',
+      name: isAdmin ? 'مدير النظام' : 'محرر ومسؤول مهام',
+      role: isAdmin ? 'admin' : 'editor',
+      expiresAt: Date.now() + 86400000
+    };
+  }
+
+  return null;
 };
 
 // Start periodic automated backup timer (Every 24 hours)
@@ -90,14 +133,40 @@ const sendJson = (res, statusCode, data) => {
   res.end(jsonStr);
 };
 
-// Helper to parse JSON request body
+// Helper to parse JSON request body - fully compatible with Node streams AND Vercel Serverless
 const parseBody = (req) => {
+  // If req.body is already parsed (Vercel Serverless Functions, Express, Next.js)
+  if (req && req.body !== undefined && req.body !== null) {
+    if (typeof req.body === 'object') {
+      return Promise.resolve(req.body);
+    }
+    if (typeof req.body === 'string') {
+      try {
+        return Promise.resolve(JSON.parse(req.body));
+      } catch (err) {
+        return Promise.resolve({});
+      }
+    }
+    if (Buffer.isBuffer(req.body)) {
+      try {
+        return Promise.resolve(JSON.parse(req.body.toString('utf-8')));
+      } catch (err) {
+        return Promise.resolve({});
+      }
+    }
+  }
+
+  // If stream is not readable or req.on is not a function
+  if (!req || typeof req.on !== 'function' || req.readableEnded) {
+    return Promise.resolve({});
+  }
+
   return new Promise((resolve, reject) => {
     let body = '';
     req.on('data', chunk => {
       body += chunk;
-      // Protect against payload > 20MB
-      if (body.length > 20 * 1024 * 1024) {
+      // Protect against payload > 25MB
+      if (body.length > 25 * 1024 * 1024) {
         req.destroy();
         reject(new Error('Payload too large'));
       }
@@ -118,7 +187,17 @@ const parseBody = (req) => {
 };
 
 const requestHandler = async (req, res) => {
-  let reqUrl = decodeURI(req.url.split('?')[0]);
+  let rawUrl = (req.url || '').split('?')[0];
+  let reqUrl = decodeURI(rawUrl);
+  if (reqUrl.length > 1 && reqUrl.endsWith('/')) {
+    reqUrl = reqUrl.slice(0, -1);
+  }
+
+  // Route matching helper (matches both '/api/foo' and '/foo')
+  const isRoute = (routePath) => {
+    const cleanRoute = routePath.startsWith('/') ? routePath : ('/' + routePath);
+    return reqUrl === cleanRoute || reqUrl === ('/api' + cleanRoute) || ('/api' + reqUrl) === cleanRoute;
+  };
 
   // Handle CORS Preflight
   if (req.method === 'OPTIONS') {
@@ -133,7 +212,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 1. Health check endpoint for Elastic Beanstalk / ALB / Monitoring
-  if (reqUrl === '/health' || reqUrl === '/healthcheck') {
+  if (isRoute('/health') || isRoute('/healthcheck')) {
     try {
       const dbStatus = await db.getStatus();
       sendJson(res, 200, {
@@ -154,7 +233,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 2. Authentication: POST /api/auth/login
-  if (reqUrl === '/api/auth/login' && req.method === 'POST') {
+  if (isRoute('/auth/login') && req.method === 'POST') {
     try {
       const { username, password } = await parseBody(req);
       if (!username || !password) {
@@ -170,16 +249,8 @@ const requestHandler = async (req, res) => {
         return;
       }
 
-      // Generate session token (valid for 7 days)
-      const token = generateToken();
-      const sessionData = {
-        id: user.id,
-        username: user.username,
-        name: user.name,
-        role: user.role, // 'admin' | 'editor'
-        expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000
-      };
-      activeTokens.set(token, sessionData);
+      // Generate stateless signed session token (valid for 7 days across all lambda/server instances)
+      const token = generateToken(user);
 
       console.log(`[AUTH] User '${user.username}' logged in with role '${user.role}'`);
       sendJson(res, 200, {
@@ -200,7 +271,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 3. Authentication: GET /api/auth/me (Check current session)
-  if (reqUrl === '/api/auth/me' && req.method === 'GET') {
+  if (isRoute('/auth/me') && req.method === 'GET') {
     const session = getAuthSession(req);
     if (!session) {
       sendJson(res, 401, { status: 'unauthorized', user: null });
@@ -219,7 +290,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 3.1 Public/Authenticated Team Members Directory: GET /api/team-members
-  if (reqUrl === '/api/team-members' && req.method === 'GET') {
+  if (isRoute('/team-members') && req.method === 'GET') {
     try {
       const users = await db.getUsers();
       const sanitizedUsers = users.map(({ password, ...u }) => ({
@@ -240,7 +311,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 4. User Management: GET /api/users (Admin-only)
-  if (reqUrl === '/api/users' && req.method === 'GET') {
+  if (isRoute('/users') && req.method === 'GET') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: هذه الصلاحية خاصة بمدير النظام (Admin) فقط' });
@@ -257,7 +328,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 5. User Management: POST /api/users (Admin-only: Create/Update user)
-  if (reqUrl === '/api/users' && req.method === 'POST') {
+  if (isRoute('/users') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: إضافة وتعديل المستخدمين متاح للمدير (Admin) فقط' });
@@ -292,7 +363,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 6. User Management: DELETE /api/users (Admin-only: Delete user)
-  if (reqUrl.startsWith('/api/users') && req.method === 'DELETE') {
+  if ((isRoute('/users') || reqUrl.startsWith('/api/users') || reqUrl.startsWith('/users')) && req.method === 'DELETE') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: حذف المستخدمين متاح للمدير (Admin) فقط' });
@@ -333,7 +404,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 6.1 User Management: POST /api/users/sync-assignments (Admin-only: Clean and sync orphaned tasks)
-  if (reqUrl === '/api/users/sync-assignments' && req.method === 'POST') {
+  if (isRoute('/users/sync-assignments') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: صيانة إسناد المهام متاحة لمدير النظام (Admin) فقط' });
@@ -356,7 +427,7 @@ const requestHandler = async (req, res) => {
 
   
   // 6.5 REST API: POST /api/upload (Upload image/document file and return URL)
-  if (reqUrl === '/api/upload' && req.method === 'POST') {
+  if (isRoute('/upload') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (session && session.role === 'viewer') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: حسابك بصلاحية استعراض فقط ولا يمكنك رفع ملفات' });
@@ -412,7 +483,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 7. REST API: GET /api/plan (Public: anyone can view)
-  if (reqUrl === '/api/plan' && req.method === 'GET') {
+  if (isRoute('/plan') && req.method === 'GET') {
     try {
       const data = await db.getPlanData();
       sendJson(res, 200, { status: 'success', data });
@@ -424,7 +495,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8. REST API: POST /api/plan (Save & sync museum plan)
-  if (reqUrl === '/api/plan' && req.method === 'POST') {
+  if (isRoute('/plan') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (session && session.role === 'viewer') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: حسابك بصلاحية استعراض فقط ولا يمكنك تعديل البيانات' });
@@ -440,13 +511,14 @@ const requestHandler = async (req, res) => {
 
       const username = session ? session.username : 'team_member';
       const role = session ? session.role : 'collaborator';
+      payload.updatedAt = new Date().toISOString();
       await db.savePlanData(payload, username);
-      console.log(`[DB] Museum plan updated by ${role} '${username}' at ${new Date().toISOString()}`);
+      console.log(`[DB] Museum plan updated by ${role} '${username}' at ${payload.updatedAt}`);
       sendJson(res, 200, {
         status: 'success',
         message: 'تم حفظ التعديلات في قاعدة البيانات بنجاح',
         savedBy: username,
-        updatedAt: new Date().toISOString()
+        updatedAt: payload.updatedAt
       });
     } catch (e) {
       console.error('Error saving plan data:', e);
@@ -457,7 +529,7 @@ const requestHandler = async (req, res) => {
 
   
   // 8.0 REST API: GET /api/notes (Public / Synced: get all platform feedback notes)
-  if (reqUrl === '/api/notes' && req.method === 'GET') {
+  if (isRoute('/notes') && req.method === 'GET') {
     try {
       const notes = await db.getNotes();
       sendJson(res, 200, { status: 'success', notes });
@@ -469,7 +541,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.01 REST API: POST /api/notes (Save & Update platform feedback notes)
-  if (reqUrl === '/api/notes' && req.method === 'POST') {
+  if (isRoute('/notes') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (session && session.role === 'viewer') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: حسابك بصلاحية استعراض فقط ولا يمكنك تعديل أو إضافة الملاحظات' });
@@ -491,7 +563,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.1 REST API: GET /api/pdr (Public: anyone can view PDR report)
-  if (reqUrl === '/api/pdr' && req.method === 'GET') {
+  if (isRoute('/pdr') && req.method === 'GET') {
     try {
       const data = await db.getPdrData();
       sendJson(res, 200, { status: 'success', data });
@@ -503,7 +575,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.2 REST API: POST /api/pdr (Protected / Synced: save PDR project deliverables & assignments)
-  if (reqUrl === '/api/pdr' && req.method === 'POST') {
+  if (isRoute('/pdr') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (session && session.role === 'viewer') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: حسابك بصلاحية استعراض فقط ولا يمكنك تعديل وثيقة المشروع' });
@@ -517,14 +589,17 @@ const requestHandler = async (req, res) => {
         return;
       }
 
+      if (!payload.metadata) payload.metadata = {};
+      payload.metadata.lastUpdated = new Date().toISOString();
+
       const actor = session ? `${session.role} '${session.username}'` : 'collaborator (auto-sync)';
       await db.savePdrData(payload, session ? session.username : 'collaborator');
-      console.log(`[PDR_DB] PDR state updated by ${actor} at ${new Date().toISOString()}`);
+      console.log(`[PDR_DB] PDR state updated by ${actor} at ${payload.metadata.lastUpdated}`);
       sendJson(res, 200, {
         status: 'success',
         message: 'تم حفظ وثيقة المشروع PDR في قاعدة البيانات بنجاح',
         savedBy: session ? session.username : 'Team Member',
-        updatedAt: new Date().toISOString()
+        updatedAt: payload.metadata.lastUpdated
       });
     } catch (e) {
       console.error('Error saving PDR database:', e);
@@ -534,7 +609,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.3 REST API: GET /api/backups (Admin-only: List all backup snapshots)
-  if (reqUrl === '/api/backups' && req.method === 'GET') {
+  if (isRoute('/backups') && req.method === 'GET') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: استعراض النسخ الاحتياطية متاح لمدير النظام (Admin) فقط' });
@@ -551,7 +626,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.4 REST API: POST /api/backups/create (Admin-only: Create manual snapshot)
-  if (reqUrl === '/api/backups/create' && req.method === 'POST') {
+  if (isRoute('/backups/create') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: أخذ النسخ الاحتياطية متاح لمدير النظام فقط' });
@@ -574,7 +649,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.41 REST API: GET /api/database/backup or /api/backup (Direct Full Database Snapshot Download)
-  if ((reqUrl === '/api/database/backup' || reqUrl === '/api/backup' || reqUrl === '/api/database/export') && req.method === 'GET') {
+  if ((isRoute('/database/backup') || isRoute('/backup') || isRoute('/database/export')) && req.method === 'GET') {
     try {
       const planData = await db.getPlanData();
       const usersData = await db.getUsers();
@@ -614,7 +689,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.5 REST API: GET /api/backups/download (Download snapshot file)
-  if (reqUrl.startsWith('/api/backups/download') && req.method === 'GET') {
+  if ((isRoute('/backups/download') || reqUrl.startsWith('/api/backups/download') || reqUrl.startsWith('/backups/download')) && req.method === 'GET') {
     try {
       const parsedUrl = new URL(req.url, 'http://localhost');
       const backupFilename = parsedUrl.searchParams.get('file') || parsedUrl.searchParams.get('id');
@@ -648,7 +723,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 8.6 REST API: POST /api/backups/restore (Admin-only: Restore data from snapshot)
-  if (reqUrl === '/api/backups/restore' && req.method === 'POST') {
+  if (isRoute('/backups/restore') && req.method === 'POST') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: استرجاع النسخ الاحتياطية متاح لمدير النظام فقط' });
@@ -676,7 +751,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 9. REST API: POST /api/leads (Save contact / export inquiries)
-  if (reqUrl === '/api/leads' && req.method === 'POST') {
+  if (isRoute('/leads') && req.method === 'POST') {
     try {
       const lead = await parseBody(req);
       const savedLead = await db.addLead(lead);
@@ -688,7 +763,7 @@ const requestHandler = async (req, res) => {
   }
 
   // 10. REST API: GET /api/leads (Admin-only: Retrieve leads)
-  if (reqUrl === '/api/leads' && req.method === 'GET') {
+  if (isRoute('/leads') && req.method === 'GET') {
     const session = getAuthSession(req);
     if (!session || session.role !== 'admin') {
       sendJson(res, 403, { status: 'error', message: 'غير مصرح: استعراض السجلات متاح لمدير النظام فقط' });

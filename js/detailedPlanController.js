@@ -3378,13 +3378,17 @@ App.DetailedPlanController = class {
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الحفظ والتثبيت...</span>';
     }
     this.model.saveToStorage();
-    await this.model.saveToServer();
+    const serverSaved = await this.model.saveToServer();
     this.playChime(880);
     if (btn) {
-      btn.innerHTML = '<i class="fa-solid fa-circle-check text-black"></i><span>تم الحفظ والتثبيت بالسيرفر! ✅</span>';
+      if (serverSaved) {
+        btn.innerHTML = '<i class="fa-solid fa-circle-check text-black"></i><span>تم الحفظ والتثبيت بالسيرفر! ✅</span>';
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-shield-halved text-amber-900"></i><span>تم الحفظ محلياً وجاري المزامنة 💾</span>';
+      }
       setTimeout(() => {
         btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i><span>حفظ وتثبيت التعديلات 💾</span>';
-      }, 3000);
+      }, 3500);
     }
   }
 

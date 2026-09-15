@@ -301,7 +301,17 @@ const initDatabase = async () => {
 dbInitPromise = initDatabase();
 
 const ensureReady = async () => {
-  if (dbInitPromise) await dbInitPromise;
+  if (dbInitPromise) {
+    try {
+      await dbInitPromise;
+    } catch (_) {}
+  }
+  if (!usePostgres && !pool && pg && getPgConfig()) {
+    try {
+      dbInitPromise = initDatabase();
+      await dbInitPromise;
+    } catch (_) {}
+  }
 };
 
 // ==========================================

@@ -117,7 +117,20 @@ App.NotesKanban = class {
       const res = await fetch("/api/notes");
       const data = await res.json();
       if (res.ok && data.status === "success" && Array.isArray(data.notes)) {
-        this.notes = data.notes;
+        const localSaved = localStorage.getItem("seraj_platform_notes_v1");
+        let localNotes = [];
+        if (localSaved) {
+          try { localNotes = JSON.parse(localSaved); } catch (_) {}
+        }
+        // If local has additional notes not yet on server, merge and push to server
+        if (localNotes.length > data.notes.length) {
+          const serverIds = new Set(data.notes.map(n => n.id));
+          const uniqueLocal = localNotes.filter(n => !serverIds.has(n.id));
+          this.notes = [...data.notes, ...uniqueLocal];
+          this.saveAndSync();
+        } else {
+          this.notes = data.notes;
+        }
         localStorage.setItem("seraj_platform_notes_v1", JSON.stringify(this.notes));
       } else {
         throw new Error("Failed to fetch from server");
