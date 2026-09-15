@@ -211,6 +211,18 @@
       keywords: ["واقع افتراضي", "vr", "نظارات", "ميناء العقير", "المشقر", "المحور 3", "virtual reality"]
     },
     {
+      id: "plan-seasonal",
+      page: "museum-plan.html",
+      planTab: "seasonal",
+      category: "museum",
+      categoryName: "دراسة وتصميم المتحف",
+      categoryIcon: "fa-calendar-star",
+      categoryColor: "#dfb15b",
+      title: "المحور ٤: المعارض الموسمية المتجددة والمؤقتة",
+      desc: "قاعة المعارض الموسمية المتغيرة والمستعارة: نوادر المصاحف، كسوة الكعبة ودرب الحج، تراث تمور هجر، وحرفيو هجر",
+      keywords: ["معارض موسمية", "موسمي", "مؤقت", "مصاحف", "كسوة الكعبة", "درب الحج", "تمور", "المحور 4", "seasonal", "exhibitions"]
+    },
+    {
       id: "plan-finance",
       page: "museum-plan.html",
       planTab: "finance",
@@ -936,7 +948,7 @@
               window.App.pdrController.switchView(viewName);
             }
           }, 300);
-        } else if (this.currentPage === "museum-plan.html" && ["identity","artifacts","schools","hologram","vr","location","finance","store_refs","team","tasks","decisions","export_tools","users"].includes(hash)) {
+        } else if (this.currentPage === "museum-plan.html" && ["identity","artifacts","schools","hologram","vr","seasonal","location","finance","store_refs","team","tasks","decisions","export_tools","users"].includes(hash)) {
           setTimeout(() => {
             if (window.App && window.App.planController) {
               window.App.planController.switchTab(hash);

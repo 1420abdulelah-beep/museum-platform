@@ -283,6 +283,7 @@ App.DetailedPlanModel = class {
       hall2_schools: { ...defaultData.hall2_schools, ...(loaded.hall2_schools || {}) },
       hologram: { ...defaultData.hologram, ...(loaded.hologram || {}) },
       vrExperience: { ...defaultData.vrExperience, ...(loaded.vrExperience || {}) },
+      seasonalExhibitions: { ...defaultData.seasonalExhibitions, ...(loaded.seasonalExhibitions || {}) },
       locationAndAreas: { ...defaultData.locationAndAreas, ...(loaded.locationAndAreas || {}) },
       budget: { ...defaultData.budget, ...(loaded.budget || {}) },
       operations: { ...defaultData.operations, ...(loaded.operations || {}) },
@@ -341,6 +342,7 @@ App.DetailedPlanModel = class {
           hall2_schools: { ...defaultData.hall2_schools, ...(json.data.hall2_schools || {}) },
           hologram: { ...defaultData.hologram, ...(json.data.hologram || {}) },
           vrExperience: { ...defaultData.vrExperience, ...(json.data.vrExperience || {}) },
+          seasonalExhibitions: { ...defaultData.seasonalExhibitions, ...(json.data.seasonalExhibitions || {}) },
           locationAndAreas: { ...defaultData.locationAndAreas, ...(json.data.locationAndAreas || {}) },
           budget: { ...defaultData.budget, ...(json.data.budget || {}) },
           operations: { ...defaultData.operations, ...(json.data.operations || {}) },
@@ -1002,6 +1004,60 @@ App.DetailedPlanModel = class {
     this.saveToStorage();
   }
 
+  /* ---------------- 6.2 SEASONAL EXHIBITIONS ---------------- */
+  updateSeasonalSpecs(updates) {
+    if (!this.data.seasonalExhibitions) {
+      this.data.seasonalExhibitions = { specs: {}, exhibitions: [] };
+    }
+    this.data.seasonalExhibitions.specs = {
+      ...this.data.seasonalExhibitions.specs,
+      ...updates
+    };
+    this.saveToStorage();
+  }
+
+  addSeasonalExhibition(exhibition) {
+    if (!this.data.seasonalExhibitions) {
+      this.data.seasonalExhibitions = { specs: {}, exhibitions: [] };
+    }
+    if (!Array.isArray(this.data.seasonalExhibitions.exhibitions)) {
+      this.data.seasonalExhibitions.exhibitions = [];
+    }
+    const newEx = {
+      id: "season_" + Date.now(),
+      num: this.data.seasonalExhibitions.exhibitions.length + 1,
+      title: exhibition.title || "معرض موسمي جديد",
+      season: exhibition.season || "الموسم المقترح",
+      desc: exhibition.desc || "",
+      targetAudience: exhibition.targetAudience || "الزوار والمهتمون",
+      partners: exhibition.partners || "",
+      activities: exhibition.activities || "",
+      approvalStatus: exhibition.approvalStatus || "معتمد",
+      assignee: exhibition.assignee || "غير مسند"
+    };
+    this.data.seasonalExhibitions.exhibitions.push(newEx);
+    this.saveToStorage();
+    return newEx;
+  }
+
+  updateSeasonalExhibition(exId, updates) {
+    if (!this.data.seasonalExhibitions || !Array.isArray(this.data.seasonalExhibitions.exhibitions)) return false;
+    const ex = this.data.seasonalExhibitions.exhibitions.find(e => String(e.id) === String(exId));
+    if (ex) {
+      Object.assign(ex, updates);
+      this.saveToStorage();
+      return true;
+    }
+    return false;
+  }
+
+  deleteSeasonalExhibition(exId) {
+    if (!this.data.seasonalExhibitions || !Array.isArray(this.data.seasonalExhibitions.exhibitions)) return;
+    this.data.seasonalExhibitions.exhibitions = this.data.seasonalExhibitions.exhibitions.filter(e => String(e.id) !== String(exId));
+    this.data.seasonalExhibitions.exhibitions.forEach((e, idx) => e.num = idx + 1);
+    this.saveToStorage();
+  }
+
   /* ---------------- 7. LOCATION & AREAS ---------------- */
   addLocation(loc) {
     const newLoc = {
@@ -1425,7 +1481,24 @@ App.DetailedPlanModel = class {
     md += `- **السعة والمدة:** ${d.vrExperience.capacity} (${d.vrExperience.duration})\n\n`;
     md += `---\n\n`;
 
-    md += `### ٦. التكاليف والمساحات والتشغيل والوقف\n`;
+    md += `### ٦. المحور الرابع: المعارض الموسمية والمؤقتة\n`;
+    const seaSpecs = d.seasonalExhibitions?.specs || {};
+    md += `- **المساحة والمرونة المعمارية:** ${seaSpecs.space || '100–150 م² مساحة مرنة متعددة الاستخدامات'}\n`;
+    md += `- **التحكم البيئي وأمان المقتنيات:** ${seaSpecs.climateControl || 'فيترينات زجاجية مكيّفة الرطوبة والحرارة'}\n`;
+    md += `- **الإنارة والوسائط:** ${seaSpecs.lighting || 'مسارات إضاءة موجهة وشاشات تفاعلية'}\n`;
+    md += `- **الدورة السنوية:** ${seaSpecs.annualCycle || '2 إلى 4 معارض سنويًا'}\n`;
+    md += `- **نموذج العوائد:** ${seaSpecs.revenue || 'تذاكر خاصة ورعايات وورش عمل'}\n\n`;
+    md += `#### المعارض الموسمية المعتمدة:\n`;
+    (d.seasonalExhibitions?.exhibitions || []).forEach(e => {
+      md += `##### • المعرض ${e.num}: ${e.title} (${e.season}) [${e.approvalStatus || 'معتمد'} | المسؤول: ${e.assignee || 'غير مسند'}]\n`;
+      md += `- **المفهوم والأثر:** ${e.desc}\n`;
+      md += `- **الجمهور المستهدف:** ${e.targetAudience}\n`;
+      md += `- **الشركاء والجهات المعارة:** ${e.partners}\n`;
+      md += `- **الأنشطة والورش المصاحبة:** ${e.activities}\n\n`;
+    });
+    md += `---\n\n`;
+
+    md += `### ٧. التكاليف والمساحات والتشغيل والوقف\n`;
     md += `#### الميزانية الإجمالية التقديرية: ${d.budget.totalFullProject} (المرحلة الأولى: ${d.budget.phase1Only})\n\n`;
     md += `| البند | التكلفة التقديرية | التفاصيل | الاعتماد | المسؤول |\n`;
     md += `| :--- | :--- | :--- | :--- | :--- |\n`;
@@ -1434,7 +1507,7 @@ App.DetailedPlanModel = class {
     });
     md += `\n---\n\n`;
 
-    md += `### ٧. متابعة مهام فريق العمل والقرارات المعلقة\n`;
+    md += `### ٨. متابعة مهام فريق العمل والقرارات المعلقة\n`;
     md += `#### مهام الفريق المعتمدة:\n`;
     this.getTasks().forEach(t => {
       md += `- [${t.status}] **${t.title}** | المسار: ${t.track} | المسؤول: ${t.assignee} | الأولوية: ${t.priority} (تاريخ: ${t.dueDate})\n`;

@@ -864,6 +864,42 @@ App.DetailedPlanController = class {
       btnEditVR.addEventListener("click", () => this.openVRModal());
     }
 
+    /* ================= 5.5. SEASONAL EXHIBITIONS (AXIS 4) ================= */
+    const btnEditSeasonalSpecs = document.getElementById("btn-edit-seasonal-specs");
+    if (btnEditSeasonalSpecs) {
+      btnEditSeasonalSpecs.addEventListener("click", () => this.openSeasonalSpecsModal());
+    }
+
+    const btnAddSeasonalExhibition = document.getElementById("btn-add-seasonal-exhibition");
+    if (btnAddSeasonalExhibition) {
+      btnAddSeasonalExhibition.addEventListener("click", () => this.openSeasonalExhibitionModal());
+    }
+
+    const btnAddSeasonalExhibitionInline = document.getElementById("btn-add-seasonal-exhibition-inline");
+    if (btnAddSeasonalExhibitionInline) {
+      btnAddSeasonalExhibitionInline.addEventListener("click", () => this.openSeasonalExhibitionModal());
+    }
+
+    contentArea.querySelectorAll(".btn-edit-seasonal-exhibition").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const exId = btn.getAttribute("data-ex-id");
+        const exhibition = this.model.data.seasonalExhibitions?.exhibitions?.find(e => e.id === exId);
+        if (exhibition) this.openSeasonalExhibitionModal(exhibition);
+      });
+    });
+
+    contentArea.querySelectorAll(".btn-delete-seasonal-exhibition").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const exId = btn.getAttribute("data-ex-id");
+        if (confirm("هل تريد حذف هذا المعرض الموسمي المقترح؟")) {
+          this.model.deleteSeasonalExhibition(exId);
+          this.playChime(440);
+          this.view.render(this.model);
+          this.bindContentEvents();
+        }
+      });
+    });
+
     /* ================= 6. LOCATION & AREAS ================= */
     const btnAddLocation = document.getElementById("btn-add-location");
     if (btnAddLocation) {
@@ -2279,6 +2315,108 @@ App.DetailedPlanController = class {
     );
   }
 
+  /* --- 5.5. SEASONAL EXHIBITIONS MODALS (AXIS 4) --- */
+  openSeasonalSpecsModal() {
+    const specs = this.model.data.seasonalExhibitions?.specs || {};
+    const st = specs.approvalStatus || "معتمد";
+    const asg = specs.assignee || "غير مسند";
+
+    this.showModal(
+      `<i class="fa-solid fa-calendar-star text-gold"></i><span>تعديل مواصفات قاعة المعارض الموسمية (المحور ٤)</span>`,
+      `
+        <div class="flex flex-col gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-white">حالة الاعتماد:</label>
+              <select id="m-sea-approval" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold">
+                ${this.renderApprovalSelectOptions(st)}
+              </select>
+            </div>
+            <div>
+              <label class="font-bold text-white">المسؤول من الفريق:</label>
+              <select id="m-sea-assignee" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold">
+                ${this.renderMemberSelectOptions(asg)}
+              </select>
+            </div>
+          </div>
+
+          <label class="font-bold text-white">المساحة والتصميم المعماري المرن:</label>
+          <input type="text" id="m-sea-space" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${specs.space || ''}" required />
+
+          <label class="font-bold text-white">التحكم المناخي وحماية المعروضات المستعارة:</label>
+          <textarea id="m-sea-climate" class="bg-black/60 border border-white/15 rounded-lg p-2 text-white outline-none focus:border-gold h-16 resize-none" required>${specs.climateControl || ''}</textarea>
+
+          <label class="font-bold text-white">الإنارة المتحفية والتجهيزات التقنية:</label>
+          <input type="text" id="m-sea-lighting" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${specs.lighting || ''}" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-white">دورة المعارض السنوية:</label>
+              <input type="text" id="m-sea-cycle" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${specs.annualCycle || ''}" />
+            </div>
+            <div>
+              <label class="font-bold text-white">عوائد التذاكر والرعايات:</label>
+              <input type="text" id="m-sea-revenue" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${specs.revenue || ''}" />
+            </div>
+          </div>
+        </div>
+      `,
+      "seasonal_specs"
+    );
+  }
+
+  openSeasonalExhibitionModal(ex = null) {
+    const st = ex ? (ex.approvalStatus || "معتمد") : "معتمد";
+    const asg = ex ? (ex.assignee || "غير مسند") : "غير مسند";
+
+    this.showModal(
+      `<i class="fa-solid fa-calendar-plus text-gold"></i><span>${ex ? 'تعديل المعرض الموسمي' : 'إضافة معرض موسمي مقترح جديد'}</span>`,
+      `
+        <div class="flex flex-col gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-white">حالة الاعتماد:</label>
+              <select id="m-ex-approval" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold">
+                ${this.renderApprovalSelectOptions(st)}
+              </select>
+            </div>
+            <div>
+              <label class="font-bold text-white">المسؤول من الفريق:</label>
+              <select id="m-ex-assignee" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold">
+                ${this.renderMemberSelectOptions(asg)}
+              </select>
+            </div>
+          </div>
+
+          <label class="font-bold text-white">عنوان وموضوع المعرض:</label>
+          <input type="text" id="m-ex-title" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${ex ? ex.title : ''}" required />
+
+          <label class="font-bold text-white">الموسم والتوقيت المقترح:</label>
+          <input type="text" id="m-ex-season" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${ex ? ex.season : ''}" required />
+
+          <label class="font-bold text-white">المفهوم ونوعية المعروضات المستعارة:</label>
+          <textarea id="m-ex-desc" class="bg-black/60 border border-white/15 rounded-lg p-2 text-white outline-none focus:border-gold h-20 resize-none" required>${ex ? ex.desc : ''}</textarea>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-white">الفئة المستهدفة:</label>
+              <input type="text" id="m-ex-target" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${ex ? ex.targetAudience : ''}" />
+            </div>
+            <div>
+              <label class="font-bold text-white">الشركاء والجهات المعارة المحتملة:</label>
+              <input type="text" id="m-ex-partners" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${ex ? ex.partners : ''}" />
+            </div>
+          </div>
+
+          <label class="font-bold text-white">الفعاليات والتجارب المصاحبة:</label>
+          <input type="text" id="m-ex-activities" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${ex ? ex.activities : ''}" />
+        </div>
+      `,
+      "seasonal_exhibition",
+      ex ? ex.id : null
+    );
+  }
+
   /* --- 6. LOCATION & AREAS MODALS --- */
   openLocationModal(loc = null) {
     const st = loc ? (loc.approvalStatus || (loc.id === 'loc_modern_kut' ? 'معتمد' : 'قيد المراجعة')) : "قيد المراجعة";
@@ -2393,7 +2531,7 @@ App.DetailedPlanController = class {
             </div>
           </div>
 
-          <label class="font-bold text-white">إجمالي المشروع كاملاً (المحاور الثلاثة):</label>
+          <label class="font-bold text-white">إجمالي المشروع كاملاً (المحاور الأربعة):</label>
           <input type="text" id="m-btotal-full" class="bg-black/60 border border-white/15 rounded-lg px-3 py-2 text-white outline-none focus:border-gold" value="${b.totalFullProject}" required />
 
           <label class="font-bold text-white">المرحلة الأولى (المتحف الدائم فقط Pilot):</label>
@@ -3026,6 +3164,32 @@ App.DetailedPlanController = class {
         approvalStatus: document.getElementById("m-vr-approval").value,
         assignee: document.getElementById("m-vr-assignee").value
       });
+    } else if (type === "seasonal_specs") {
+      this.model.updateSeasonalSpecs({
+        space: document.getElementById("m-sea-space").value.trim(),
+        climateControl: document.getElementById("m-sea-climate").value.trim(),
+        lighting: document.getElementById("m-sea-lighting").value.trim(),
+        annualCycle: document.getElementById("m-sea-cycle").value.trim(),
+        revenue: document.getElementById("m-sea-revenue").value.trim(),
+        approvalStatus: document.getElementById("m-sea-approval").value,
+        assignee: document.getElementById("m-sea-assignee").value
+      });
+    } else if (type === "seasonal_exhibition") {
+      const exData = {
+        title: document.getElementById("m-ex-title").value.trim(),
+        season: document.getElementById("m-ex-season").value.trim(),
+        desc: document.getElementById("m-ex-desc").value.trim(),
+        targetAudience: document.getElementById("m-ex-target").value.trim(),
+        partners: document.getElementById("m-ex-partners").value.trim(),
+        activities: document.getElementById("m-ex-activities").value.trim(),
+        approvalStatus: document.getElementById("m-ex-approval").value,
+        assignee: document.getElementById("m-ex-assignee").value
+      };
+      if (this.activeModalItemId) {
+        this.model.updateSeasonalExhibition(this.activeModalItemId, exData);
+      } else {
+        this.model.addSeasonalExhibition(exData);
+      }
     } else if (type === "location") {
       const locData = {
         name: document.getElementById("m-loc-name").value.trim(),

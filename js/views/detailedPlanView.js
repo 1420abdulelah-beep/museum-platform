@@ -58,6 +58,9 @@ App.DetailedPlanView = class {
       case "vr":
         html = this.renderVRTab(model);
         break;
+      case "seasonal":
+        html = this.renderSeasonalTab(model);
+        break;
       case "location":
         html = this.renderLocationTab(model);
         break;
@@ -159,6 +162,7 @@ App.DetailedPlanView = class {
       schools: "exhibits",
       hologram: "exhibits",
       vr: "exhibits",
+      seasonal: "exhibits",
       finance: "operations",
       store_refs: "operations",
       team: "team_ops",
@@ -702,22 +706,22 @@ App.DetailedPlanView = class {
           </div>
         </div>
 
-        <!-- The 3 Axes Overview Table -->
+        <!-- The 4 Axes Overview Table -->
         <div class="flex flex-col gap-4">
           <div class="flex items-center justify-between">
             <h4 class="text-lg font-bold text-white flex items-center gap-2">
               <i class="fa-solid fa-layer-group text-gold"></i>
-              <span>المحاور الثلاثة لمنظومة المتحف</span>
+              <span>المحاور الأربعة لمنظومة المتحف</span>
             </h4>
             <span class="text-xs text-gray-400">قابلة للتنفيذ المجمع أو المرحلي المستقل</span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             ${d.identity.axesTable.map((ax, idx) => `
               <div class="p-6 rounded-xl bg-white/[0.03] border border-white/10 hover:border-gold/30 transition-all flex flex-col justify-between gap-4 relative group">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-mono font-black text-gold px-2.5 py-1 rounded bg-gold/10">0${idx+1}</span>
                   <div class="flex items-center gap-2">
-                    <span class="text-[11px] px-2.5 py-0.5 rounded-full ${ax.complexity.includes('مرتفع') ? 'bg-clay/20 text-clay border border-clay/30' : 'bg-palm/20 text-palm border border-palm/30'} font-semibold">تعقيد: ${ax.complexity}</span>
+                    <span class="text-[11px] px-2.5 py-0.5 rounded-full ${ax.complexity.includes('مرتفع') ? 'bg-clay/20 text-clay border border-clay/30' : ax.complexity.includes('متوسط') && !ax.complexity.includes('منخفض') ? 'bg-gold/20 text-gold border border-gold/30' : 'bg-palm/20 text-palm border border-palm/30'} font-semibold">تعقيد: ${ax.complexity}</span>
                     ${canEdit ? `<button class="btn-edit-axis text-gray-400 hover:text-gold text-xs p-1" data-axis-index="${idx}" title="تعديل مواصفات المحور"><i class="fa-solid fa-pen"></i></button>` : ''}
                   </div>
                 </div>
@@ -1795,6 +1799,162 @@ App.DetailedPlanView = class {
             </span>
             <h4 class="text-base font-bold text-white">مفهوم المحتوى والفيلم المستقل</h4>
             <p class="text-xs text-gray-300 leading-relaxed">${vr.sceneConcept || 'محتوى مستقل مخصص للـ VR'}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ---------------- 5.2 AXIS 4: SEASONAL EXHIBITIONS TAB ---------------- */
+  renderSeasonalTab(model) {
+    const seasonal = model.data?.seasonalExhibitions || {};
+    const specs = seasonal.specs || {};
+    const exhibitions = seasonal.exhibitions || [];
+    const canEdit = model.canEdit();
+
+    return `
+      <div class="flex flex-col gap-8 animate-fadeIn">
+        <!-- Banner Header -->
+        <div class="p-6 rounded-2xl bg-gradient-to-r from-gold/20 via-black/75 to-palm/15 border border-gold/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gold/20 border border-gold/40 flex items-center justify-center text-gold text-2xl shadow-lg shadow-gold/20">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-gold uppercase tracking-wider">المحور الرابع: الفضاء المتحفي المتجدد</span>
+                ${this.renderApprovalBadge(specs.approvalStatus || 'معتمد')}
+                ${this.renderAssigneeBadge(specs.assignee || 'غير مسند')}
+              </div>
+              <h3 class="text-xl font-black text-white mt-0.5">قاعة المعارض الموسمية المتجددة والفعاليات الثقافية</h3>
+            </div>
+          </div>
+          ${canEdit ? `
+          <div class="flex items-center gap-2">
+            <button id="btn-edit-seasonal-specs" class="px-4 py-2 rounded-xl bg-gold text-black text-xs font-bold flex items-center gap-2 hover:bg-white transition-all shadow-md shadow-gold/20">
+              <i class="fa-solid fa-pen"></i>
+              <span>تعديل مواصفات القاعة</span>
+            </button>
+            <button id="btn-add-seasonal-exhibition" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-bold flex items-center gap-2 transition-all">
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة معرض موسمي</span>
+            </button>
+          </div>
+          ` : ''}
+        </div>
+
+        <!-- 5 Key Specifications Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3 hover:border-gold/30 transition-all">
+            <span class="w-10 h-10 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-lg">
+              <i class="fa-solid fa-vector-square"></i>
+            </span>
+            <h4 class="text-base font-bold text-white">المساحة والمرونة المعمارية</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${specs.space || '100–150 م² مساحة مرنة مع قواطع ذكية ومتحركة'}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3 hover:border-gold/30 transition-all">
+            <span class="w-10 h-10 rounded-xl bg-palm/10 border border-palm/30 flex items-center justify-center text-palm text-lg">
+              <i class="fa-solid fa-temperature-half"></i>
+            </span>
+            <h4 class="text-base font-bold text-white">التحكم البيئي وأمان المقتنيات</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${specs.climateControl || 'فيترينات زجاجية مكيّفة الرطوبة والحرارة وأنظمة أمان متطورة للمخطوطات والقطع المستعارة'}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3 hover:border-gold/30 transition-all">
+            <span class="w-10 h-10 rounded-xl bg-laser/10 border border-laser/30 flex items-center justify-center text-laser text-lg">
+              <i class="fa-solid fa-lightbulb"></i>
+            </span>
+            <h4 class="text-base font-bold text-white">الإنارة المتحفية والشاشات الذكية</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${specs.lighting || 'إنارة متحفية موجهة متحركة وشاشات وسائط تفاعلية متعددة الأغراض'}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3 hover:border-gold/30 transition-all">
+            <span class="w-10 h-10 rounded-xl bg-clay/10 border border-clay/30 flex items-center justify-center text-clay text-lg">
+              <i class="fa-solid fa-rotate"></i>
+            </span>
+            <h4 class="text-base font-bold text-white">الدورة التشغيلية والتزامن السنوي</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${specs.annualCycle || '2 إلى 4 معارض سنويًا (مدة المعرض 2-3 أشهر) متزامنة مع المواسم السياحية'}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 md:col-span-2 flex flex-col gap-3 hover:border-gold/30 transition-all">
+            <span class="w-10 h-10 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-lg">
+              <i class="fa-solid fa-handshake-angle"></i>
+            </span>
+            <h4 class="text-base font-bold text-white">نموذج العوائد والرعايات والورش</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${specs.revenue || 'تذاكر خاصة بالمعارض الموسمية، رعايات مؤسسية، وورش عمل مصاحبة'}</p>
+          </div>
+        </div>
+
+        <!-- Proposed Seasonal Exhibitions List -->
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <h4 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-images text-gold"></i>
+                <span>المعارض الموسمية المقترحة وجدولتها (${exhibitions.length} معارض)</span>
+              </h4>
+            </div>
+            ${canEdit ? `
+            <button id="btn-add-seasonal-exhibition-inline" class="text-xs text-gold hover:text-white flex items-center gap-1.5 transition-all">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>إضافة معرض جديد</span>
+            </button>
+            ` : ''}
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            ${exhibitions.map((ex, idx) => `
+              <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-gold/40 transition-all flex flex-col justify-between gap-4 relative group shadow-lg">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-xs font-mono font-black text-gold px-2.5 py-1 rounded bg-gold/10">0${ex.num || idx+1}</span>
+                    <h5 class="text-base font-black text-white">${ex.title}</h5>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    ${this.renderApprovalBadge(ex.approvalStatus || 'معتمد')}
+                    ${canEdit ? `
+                    <div class="flex items-center gap-1">
+                      <button class="btn-edit-seasonal-exhibition text-gray-400 hover:text-gold text-xs p-1" data-ex-id="${ex.id || idx}" title="تعديل المعرض"><i class="fa-solid fa-pen"></i></button>
+                      <button class="btn-delete-seasonal-exhibition text-gray-500 hover:text-clay text-xs p-1" data-ex-id="${ex.id || idx}" title="حذف المعرض"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    ` : ''}
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-gold bg-gold/10 px-3 py-1.5 rounded-lg border border-gold/20 font-bold">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                  <span>${ex.season || 'الموسم المقترح'}</span>
+                </div>
+
+                <p class="text-xs text-gray-300 leading-relaxed bg-black/30 p-3.5 rounded-xl border border-white/6">
+                  ${ex.desc}
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div class="p-2.5 rounded-lg bg-white/[0.02] border border-white/6">
+                    <span class="text-gray-400 block mb-1 font-bold text-[11px]"><i class="fa-solid fa-users me-1 text-laser"></i>الجمهور المستهدف:</span>
+                    <span class="text-gray-300">${ex.targetAudience || 'الزوار والمهتمون'}</span>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-white/[0.02] border border-white/6">
+                    <span class="text-gray-400 block mb-1 font-bold text-[11px]"><i class="fa-solid fa-landmark me-1 text-palm"></i>الشركاء والجهات المعارة:</span>
+                    <span class="text-gray-300">${ex.partners || 'جهات شريكة'}</span>
+                  </div>
+                </div>
+
+                ${ex.activities ? `
+                <div class="p-2.5 rounded-lg bg-white/[0.02] border border-white/6 text-xs">
+                  <span class="text-gray-400 block mb-1 font-bold text-[11px]"><i class="fa-solid fa-palette me-1 text-gold"></i>الأنشطة والورش المصاحبة:</span>
+                  <span class="text-gray-300">${ex.activities}</span>
+                </div>
+                ` : ''}
+
+                <div class="pt-3 border-t border-white/6 flex items-center justify-between text-xs text-gray-400">
+                  <span>المسؤول المكلّف:</span>
+                  ${this.renderAssigneeBadge(ex.assignee || 'غير مسند')}
+                </div>
+              </div>
+            `).join('')}
           </div>
         </div>
       </div>
