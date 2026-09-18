@@ -146,26 +146,26 @@
           "id": "role_ops_coordination",
           "icon": "fa-calendar-check",
           "title": "إدارة التنسيق والتواصل",
-          "holder": "السيد أسامة",
-          "status": "active",
+          "holder": "شاغر",
+          "status": "vacant",
           "tierId": "tier_specialized_ops",
           "priority": "medium",
           "subgroup": "",
           "username": "Osamah",
           "description": "تتولى تنظيم الاجتماعات، التنسيق الداخلي بين الإدارات، وجدولة الأعمال.",
-          "statusLabel": "معتمد"
+          "statusLabel": "شاغر"
         },
         {
           "id": "role_ops_content_company",
           "icon": "fa-clapperboard",
-          "title": "صناعة المحتوى",
-          "holder": "شركة خارجية",
-          "status": "external",
+          "title": "إدارة حسابات برامج التواصل الإجتماعي للمشروع",
+          "holder": "السيد أسامة",
+          "status": "active",
           "tierId": "tier_specialized_ops",
           "priority": "high",
           "subgroup": "",
           "description": "تتولى الإنتاج الفني وتصميم المحتوى بناءً على اعتمادات (الرئيس، المدير التنفيذي، والجهة العلمية).",
-          "statusLabel": "شركة خارجية"
+          "statusLabel": "معتمد"
         }
       ],
       "number": 3,
@@ -208,6 +208,6 @@
       "supervisorNote": "تنتقل مرجعية هذه المرحلة مباشرة تحت إشراف (مجلس وقف العلم)"
     }
   ],
-  "updatedAt": "2026-09-18T15:46:10.068Z",
+  "updatedAt": "2026-09-18T16:00:34.578Z",
   "strategicNote": "هذه الهيكلة الإدارية مخصصة حصراً لـ مرحلة تنفيذ المشروع، وتُعتبر مهامها ولجانها منتهية بانتهاء اكتمال التنفيذ. بعد ذلك، تنتقل الإدارة إلى هيكل تنظيمي جديد يُعنى بالتشغيل والمتابعة، وتكون رئاسته ومرجعيته المباشرة تحت الجهة المشرفة العليا للمشروع وهي (مجلس وقف العلم)."
 }

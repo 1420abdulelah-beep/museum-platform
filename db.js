@@ -255,6 +255,23 @@ const initPgSchema = async (client) => {
       }
     } catch (_) {}
   }
+
+  // Auto-seed: Organizational Structure
+  const orgCheck = await client.query("SELECT 1 FROM platform_data WHERE key = 'org_structure'");
+  if (orgCheck.rowCount === 0 && fs.existsSync(ORG_STRUCTURE_FILE)) {
+    try {
+      const orgData = JSON.parse(fs.readFileSync(ORG_STRUCTURE_FILE, 'utf-8'));
+      if (orgData) {
+        await client.query(
+          `INSERT INTO platform_data (key, data, updated_by, updated_at)
+           VALUES ('org_structure', $1, $2, NOW())
+           ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+          [JSON.stringify(orgData), 'system_seeder']
+        );
+        console.log('✅ [DB] Seeded Org Structure into PostgreSQL platform_data.');
+      }
+    } catch (_) {}
+  }
 };
 
 // Initialize the Database Connection
