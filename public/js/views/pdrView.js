@@ -120,20 +120,13 @@ App.PdrView = class {
         <div class="p-6 sm:p-8 rounded-3xl bg-[radial-gradient(ellipse_at_top_right,rgba(223,177,91,0.18)_0%,rgba(8,10,19,0.95)_75%)] border border-gold/30 shadow-2xl relative overflow-hidden">
           <div class="absolute -top-10 -left-10 w-80 h-80 bg-laser/10 rounded-full blur-3xl pointer-events-none"></div>
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
-            <div class="space-y-3 max-w-3xl">
+            <div class="space-y-2 max-w-3xl">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-3 py-1 rounded-full bg-gold/20 text-gold border border-gold/40 text-xs font-black flex items-center gap-1.5">
-                  <i class="fa-solid fa-truck-moving"></i>
-                  <span>المركز المتنقل لتجربة تاريخ الأحساء في صدر الإسلام</span>
-                </span>
                 <span class="text-xs text-gray-400">وثيقة تعريف المشروع الرسمية — PROJECT DEFINITION REPORT (PDR)</span>
               </div>
               <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
                 مصفوفة أقسام المشروع الـ 17 واستوديو إنجاز الفريق
               </h2>
-              <p class="text-sm text-gray-300 leading-relaxed">
-                ${about.summaryAr || "مبادرة ثقافية غير ربحية تهدف إلى تقديم تجربة تاريخية متنقلة تفاعلية توثق تاريخ الأحساء في صدر الإسلام وتصل إلى جميع مناطق المملكة."}
-              </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-3 shrink-0">
@@ -148,13 +141,13 @@ App.PdrView = class {
             </div>
           </div>
 
-          <!-- Quick Truck Pod Feature Badges -->
+          <!-- Quick Museum Feature Badges -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-white/10 text-xs">
             <div class="flex items-center gap-2.5 text-gray-300">
               <div class="w-7 h-7 rounded-lg bg-gold/15 text-gold flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-truck"></i>
+                <i class="fa-solid fa-landmark"></i>
               </div>
-              <span>مقطورة 16م بتوسعة هيدروليكية</span>
+              <span>صرح ومتحف دائم متكامل</span>
             </div>
             <div class="flex items-center gap-2.5 text-gray-300">
               <div class="w-7 h-7 rounded-lg bg-laser/15 text-laser flex items-center justify-center shrink-0">
@@ -170,9 +163,9 @@ App.PdrView = class {
             </div>
             <div class="flex items-center gap-2.5 text-gray-300">
               <div class="w-7 h-7 rounded-lg bg-clay/15 text-clay flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-map-pin"></i>
+                <i class="fa-solid fa-location-dot"></i>
               </div>
-              <span>تغطية 20 مدينة بالمملكة</span>
+              <span>موقع استراتيجي دائم بالأحساء</span>
             </div>
           </div>
         </div>
@@ -1615,31 +1608,144 @@ App.PdrView = class {
             <h4 class="text-lg font-black text-white">الهيكل الإداري وفريق العمل التنفيذي (Organizational Chart)</h4>
           </div>
 
-          <!-- Top Executive Level -->
-          <div class="flex justify-center">
-            <div class="p-4 rounded-2xl bg-gold/20 border-2 border-gold text-center space-y-1 shadow-xl shadow-gold/10 max-w-xs w-full">
-              <span class="text-2xl">👨‍💼</span>
-              <h5 class="text-sm font-black text-white">المدير التنفيذي والمشرف العام</h5>
-              <p class="text-xs text-gold font-bold">د. عبد المحسن المبارك</p>
-              <span class="text-[10px] text-gray-300">القيادة العامة ومتابعة الأهداف</span>
+          <div class="flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-gold/20 text-gold flex items-center justify-center font-black text-sm">12</span>
+              <div>
+                <h4 class="text-lg font-black text-white">الهيكل التنظيمي المعتمد لمشروع «سراج الأحساء» (Organizational Chart)</h4>
+                <p class="text-xs text-gray-400">مرحلة تنفيذ المشروع وانتقال الإدارة لمجلس وقف العلم</p>
+              </div>
+            </div>
+            <a href="team-admin.html" class="px-3.5 py-1.5 rounded-xl bg-gold/15 hover:bg-gold hover:text-black border border-gold/40 text-gold text-xs font-bold transition-all flex items-center gap-1.5">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>إدارة وتعديل الهيكل 👑</span>
+            </a>
+          </div>
+
+          <!-- Strategic Note Banner -->
+          <div class="p-4 rounded-2xl bg-black/60 border border-gold/30 flex items-start gap-3 text-xs text-gray-300">
+            <i class="fa-solid fa-compass text-gold text-sm mt-0.5"></i>
+            <p class="leading-relaxed">
+              <strong class="text-gold">ملاحظة استراتيجية:</strong> هذه الهيكلة الإدارية مخصصة حصراً لـ <strong class="text-white">مرحلة تنفيذ المشروع</strong>، وتُعتبر مهامها ولجانها منتهية بانتهاء اكتمال التنفيذ. بعد ذلك، تنتقل الإدارة إلى هيكل تنظيمي جديد يُعنى بالتشغيل والمتابعة تحت إشراف <strong class="text-gold">(مجلس وقف العلم)</strong>.
+            </p>
+          </div>
+
+          <!-- Level 1: Governance & Oversight -->
+          <div class="space-y-2">
+            <span class="text-[11px] font-black text-gold uppercase tracking-wider block text-center">أولاً: النطاق الإشرافي والتشريعي (مستوى الحوكمة)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              <div class="p-4 rounded-2xl bg-gold/10 border border-gold/40 text-center space-y-1">
+                <span class="text-xl">🏛️</span>
+                <h5 class="text-xs font-black text-white">الجهة المشرفة العليا</h5>
+                <p class="text-xs text-gold font-black">مجلس وقف العلم</p>
+                <p class="text-[10px] text-gray-400">مراجعة العناوين، الاعتماد المبدئي، والموافقة على الميزانية، وتؤول إليها إدارة المشروع بالكامل</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-gold/10 border border-gold/40 text-center space-y-1">
+                <span class="text-xl">⚖️</span>
+                <h5 class="text-xs font-black text-white">مجلس الإدارة المستقل</h5>
+                <p class="text-xs text-gold font-black">مجلس الإدارة</p>
+                <p class="text-[10px] text-gray-400">السلطة التشريعية والاعتماد النهائي، سقف الصلاحيات المالية، وتوقيع العقود</p>
+              </div>
             </div>
           </div>
 
-          <div class="w-0.5 h-6 bg-gold/50 mx-auto"></div>
+          <div class="w-0.5 h-4 bg-white/20 mx-auto"></div>
 
-          <!-- Department Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            ${orgItems.slice(1).map(org => {
-              const tm = model.getTeamMember(org.assignedTo);
-              return `
-                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-center space-y-1.5 hover:border-gold/50 transition-all">
-                  <span class="text-lg">${tm ? tm.avatar : '👤'}</span>
-                  <h6 class="text-xs font-bold text-white">${org.title}</h6>
-                  <p class="text-[11px] text-gold font-semibold">${tm ? tm.name : 'مسؤول القسم'}</p>
-                  <p class="text-[10px] text-gray-400 line-clamp-1">${org.description}</p>
-                </div>
-              `;
-            }).join('')}
+          <!-- Level 2: Executive Leadership -->
+          <div class="space-y-2">
+            <span class="text-[11px] font-black text-palm uppercase tracking-wider block text-center">ثانياً: النطاق القيادي والتنفيذي (مرحلة التنفيذ)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              <div class="p-4 rounded-2xl bg-palm/10 border border-palm/40 text-center space-y-1">
+                <span class="text-xl">👨‍💻</span>
+                <h5 class="text-xs font-black text-white">رئيس المشروع والإدارة التقنية</h5>
+                <p class="text-xs text-palm font-black">عبدالإله العصفور</p>
+                <p class="text-[10px] text-gray-400">القيادة العامة لمرحلة التنفيذ، الجوانب التقنية والتطبيقات، والإشراف على المحتوى</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-palm/10 border border-palm/40 text-center space-y-1">
+                <span class="text-xl">👨‍💼</span>
+                <h5 class="text-xs font-black text-white">المدير التنفيذي</h5>
+                <p class="text-xs text-palm font-black">ثامر الجعفري</p>
+                <p class="text-[10px] text-gray-400">التنفيذ التشغيلي، صياغة العقود، أوامر الصرف المالي، والإشراف على صناعة المحتوى</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-0.5 h-4 bg-white/20 mx-auto"></div>
+
+          <!-- Level 3: Specialized Operations -->
+          <div class="space-y-2">
+            <span class="text-[11px] font-black text-laser uppercase tracking-wider block text-center">ثالثاً: النطاق التشغيلي المتخصص (مرحلة التنفيذ والمتابعة)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">📖</span>
+                <h6 class="text-xs font-bold text-white">الجهة العلمية (رئيس الجهة العلمية)</h6>
+                <p class="text-[11px] text-clay font-bold italic">شاغر (قيد الترشيح)</p>
+                <p class="text-[10px] text-gray-400">القيادة والاعتماد المرجعي الدقيق لكافة مخرجات المشروع</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">🎓</span>
+                <h6 class="text-xs font-bold text-white">الجهة العلمية (المستشار العلمي)</h6>
+                <p class="text-[11px] text-laser font-bold">أحمد الدوغان</p>
+                <p class="text-[10px] text-gray-400">الاستشارات والتوجيه للمفاصل العلمية والشرعية الرئيسية</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">💰</span>
+                <h6 class="text-xs font-bold text-white">إدارة المالية والمتابعة</h6>
+                <p class="text-[11px] text-laser font-bold">أنس الدوغان</p>
+                <p class="text-[10px] text-gray-400">المراقبة والمحاسبة وضبط الإيرادات وتنفيذ الحوالات</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">📢</span>
+                <h6 class="text-xs font-bold text-white">الإدارة الإعلامية والشراكات</h6>
+                <p class="text-[11px] text-laser font-bold">السيد عبدالرحمن</p>
+                <p class="text-[10px] text-gray-400">التحدث الرسمي، العرض على الجهات، وإدارة العلاقات العامة</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">🤝</span>
+                <h6 class="text-xs font-bold text-white">علاقات الداعمين والمشاركين</h6>
+                <p class="text-[11px] text-clay font-bold italic">شاغر</p>
+                <p class="text-[10px] text-gray-400">المتابعة اليومية مع الرعاة والداعمين وتجربة المشاركين</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1">
+                <span class="text-base">🗓️</span>
+                <h6 class="text-xs font-bold text-white">إدارة التنسيق والتواصل</h6>
+                <p class="text-[11px] text-laser font-bold">السيد أسامة</p>
+                <p class="text-[10px] text-gray-400">تنظيم الاجتماعات، التنسيق الداخلي، وجدولة الأعمال</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-laser/5 border border-laser/30 text-center space-y-1 sm:col-span-2 lg:col-span-3">
+                <span class="text-base">🎬</span>
+                <h6 class="text-xs font-bold text-white">صناعة المحتوى</h6>
+                <p class="text-[11px] text-laser font-bold">شركة خارجية متخصصة</p>
+                <p class="text-[10px] text-gray-400">الإنتاج الفني وتصميم المحتوى بناءً على اعتمادات (الرئيس، المدير التنفيذي، والجهة العلمية)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-0.5 h-4 bg-white/20 mx-auto"></div>
+
+          <!-- Level 4: Post-Execution Sustainability -->
+          <div class="space-y-2">
+            <span class="text-[11px] font-black text-clay uppercase tracking-wider block text-center">رابعاً: نطاق التشغيل والمتابعة (مرحلة ما بعد اكتمال التنفيذ — إشراف مجلس وقف العلم)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              <div class="p-3.5 rounded-xl bg-clay/10 border border-dashed border-clay/40 text-center space-y-1">
+                <span class="text-lg">⏳</span>
+                <h6 class="text-xs font-bold text-white">رئاسة المشروع بعد اكتمال تنفيذه</h6>
+                <p class="text-[11px] text-clay font-bold italic">شاغر (تنتقل الإدارة لمجلس وقف العلم)</p>
+                <p class="text-[10px] text-gray-400">القيادة المستمرة وإدارة الوجهة المعرفية</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-clay/10 border border-dashed border-clay/40 text-center space-y-1">
+                <span class="text-lg">🔧</span>
+                <h6 class="text-xs font-bold text-white">إدارة التشغيل والصيانة بعد اكتمال المشروع</h6>
+                <p class="text-[11px] text-clay font-bold italic">شاغر</p>
+                <p class="text-[10px] text-gray-400">الصيانة الفنية والهندسية واستدامة المرافق</p>
+              </div>
+            </div>
           </div>
         </div>
 

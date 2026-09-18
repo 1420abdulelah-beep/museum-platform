@@ -562,6 +562,50 @@ const requestHandler = async (req, res) => {
     return;
   }
 
+  // 8.05 REST API: GET /api/org-structure (Public: anyone can view organizational structure)
+  if ((isRoute('/org-structure') || reqUrl.startsWith('/api/org-structure') || reqUrl.startsWith('/org-structure')) && req.method === 'GET') {
+    try {
+      const data = await db.getOrgStructureData();
+      sendJson(res, 200, { status: 'success', data });
+    } catch (e) {
+      console.error('Error reading org structure data:', e);
+      sendJson(res, 500, { status: 'error', message: 'Failed to read org structure database', error: e.message });
+    }
+    return;
+  }
+
+  // 8.06 REST API: POST /api/org-structure (Protected / Synced: save organizational structure)
+  if ((isRoute('/org-structure') || reqUrl.startsWith('/api/org-structure') || reqUrl.startsWith('/org-structure')) && req.method === 'POST') {
+    const session = getAuthSession(req);
+    if (session && session.role === 'viewer') {
+      sendJson(res, 403, { status: 'error', message: 'غير مصرح: حسابك بصلاحية استعراض فقط ولا يمكنك تعديل الهيكل التنظيمي' });
+      return;
+    }
+
+    try {
+      const payload = await parseBody(req);
+      if (!payload || typeof payload !== 'object') {
+        sendJson(res, 400, { status: 'error', message: 'بيانات غير صحيحة' });
+        return;
+      }
+
+      payload.updatedAt = new Date().toISOString();
+      const username = session ? session.username : 'collaborator';
+      await db.saveOrgStructureData(payload, username);
+      console.log(`[ORG_STRUCTURE] Updated by '${username}' at ${payload.updatedAt}`);
+      sendJson(res, 200, {
+        status: 'success',
+        message: 'تم حفظ وتحديث الهيكل التنظيمي بنجاح',
+        savedBy: username,
+        updatedAt: payload.updatedAt
+      });
+    } catch (e) {
+      console.error('Error saving org structure data:', e);
+      sendJson(res, 500, { status: 'error', message: 'Failed to save org structure', error: e.message });
+    }
+    return;
+  }
+
   // 8.1 REST API: GET /api/pdr (Public: anyone can view PDR report)
   if (isRoute('/pdr') && req.method === 'GET') {
     try {
@@ -859,6 +903,14 @@ if (require.main === module) {
       process.exit(0);
     }
   };
+
+  process.on('uncaughtException', (err) => {
+    console.error('⚠️ [Server] Uncaught Exception:', err.message);
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('⚠️ [Server] Unhandled Rejection:', reason);
+  });
 
   process.on('SIGTERM', shutdown);
   process.on('SIGINT', shutdown);

@@ -40,6 +40,9 @@ App.DetailedPlanView = class {
     let html = "";
 
     switch (activeTab) {
+      case "org_structure":
+        html = this.renderOrgStructureTab(model);
+        break;
       case "team":
         html = this.renderTeamTab(model);
         break;
@@ -156,6 +159,7 @@ App.DetailedPlanView = class {
 
     // Determine category of active tab
     const tabToCat = {
+      org_structure: "team_ops",
       identity: "vision",
       location: "vision",
       artifacts: "exhibits",
@@ -520,6 +524,28 @@ App.DetailedPlanView = class {
     return `<span class="text-[10px] px-2 py-0.5 rounded-md font-semibold bg-black/60 text-gray-300 border border-white/10 inline-flex items-center gap-1 max-w-[150px] truncate" title="المسؤول: ${clean}"><i class="fa-solid fa-user-tag text-gold text-[9px]"></i>${clean}</span>`;
   }
 
+  /* ---------------- 0.0 DEDICATED ORGANIZATIONAL STRUCTURE TAB (الهيكل التنظيمي المعتمد) ---------------- */
+  renderOrgStructureTab(model) {
+    setTimeout(async () => {
+      if (window.App && window.App.OrgStructure) {
+        await window.App.OrgStructure.init();
+        const container = document.getElementById("museum-plan-org-structure-container");
+        if (container) {
+          window.App.OrgStructure.render(container);
+        }
+      }
+    }, 50);
+
+    return `
+      <div id="museum-plan-org-structure-container">
+        <div class="p-12 text-center text-gray-400 bg-black/60 rounded-3xl border border-white/10 animate-fadeIn">
+          <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-3 block"></i>
+          <span>جاري تحميل الهيكل التنظيمي المعتمد لمشروع سراج الأحساء...</span>
+        </div>
+      </div>
+    `;
+  }
+
     /* ---------------- 0. DEDICATED TEAM TAB (فريق العمل - مخصص للمدير فقط) ---------------- */
   renderTeamTab(model) {
     if (!model.isAdmin()) {
@@ -541,6 +567,9 @@ App.DetailedPlanView = class {
             <button onclick="window.App && window.App.planController ? window.App.planController.openLoginModal() : document.getElementById('auth-login-modal').classList.remove('hidden')" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gold hover:bg-white text-black font-black text-xs transition-all shadow-xl shadow-gold/20 flex items-center justify-center gap-2 cursor-pointer">
               <i class="fa-solid fa-crown"></i>
               <span>تسجيل الدخول كمدير نظام 👑</span>
+            </button>
+            <button onclick="window.App.planController.switchTab('org_structure')" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/5 hover:bg-white/10 text-gold border border-gold/30 text-xs font-bold transition-all text-center">
+              استعراض الهيكل التنظيمي المعتمد 🏛️
             </button>
             <a href="index.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/15 text-xs font-bold transition-all text-center">
               العودة للرئيسية
@@ -583,6 +612,11 @@ App.DetailedPlanView = class {
               <span class="text-[11px] text-gray-400">إنجاز المهام</span>
               <span class="text-base font-black text-gold font-mono">${taskStats.progressPercent}% (${taskStats.completed}/${taskStats.total})</span>
             </div>
+
+            <button onclick="window.App.planController.switchTab('org_structure')" class="py-3 px-3.5 rounded-xl bg-laser/15 hover:bg-laser text-laser hover:text-black border border-laser/40 text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-lg shrink-0 cursor-pointer">
+              <i class="fa-solid fa-sitemap"></i>
+              <span>الهيكل التنظيمي 🏛️</span>
+            </button>
             
             ${isAdmin ? `
               <a href="team-admin.html" class="py-3 px-4 rounded-xl bg-gradient-to-r from-gold to-gold-dark hover:from-white hover:to-gold text-black text-xs font-black transition-all flex items-center justify-center gap-2 shadow-lg shadow-gold/20 shrink-0">

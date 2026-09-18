@@ -1,0 +1,213 @@
+{
+  "tiers": [
+    {
+      "id": "tier_governance",
+      "icon": "fa-landmark",
+      "name": "أولاً: النطاق الإشرافي والتشريعي (مستوى الحوكمة)",
+      "badge": "سلطة الحوكمة والاعتماد",
+      "color": "gold",
+      "roles": [
+        {
+          "id": "role_gov_waqf",
+          "icon": "fa-building-columns",
+          "title": "الجهة المشرفة العليا",
+          "holder": "مجلس وقف العلم",
+          "status": "active",
+          "tierId": "tier_governance",
+          "priority": "critical",
+          "subgroup": "",
+          "description": "تتولى مراجعة العناوين الرئيسية للمشروع، وإصدار الاعتماد المبدئي للرؤية، والموافقة على الميزانية التقديرية العامة، وتؤول إليها إدارة المشروع بالكامل بعد اكتمال التنفيذ.",
+          "statusLabel": "جهة عليا مشرفة"
+        },
+        {
+          "id": "role_gov_board",
+          "icon": "fa-scale-balanced",
+          "title": "مجلس الإدارة المستقل",
+          "holder": "مجلس الإدارة",
+          "status": "active",
+          "tierId": "tier_governance",
+          "priority": "critical",
+          "subgroup": "",
+          "description": "يمثل السلطة التشريعية والاعتماد النهائي للمشروع في مرحلة التنفيذ. يختص باعتماد سقف الصلاحيات المالية للإدارة التنفيذية، وتوقيع العقود، واعتماد القرارات الاستراتيجية.",
+          "statusLabel": "سلطة تشريعية"
+        }
+      ],
+      "number": 1,
+      "description": "المستوى الأعلى للمساءلة والتشريع والاعتمادات الاستراتيجية والمالية."
+    },
+    {
+      "id": "tier_leadership",
+      "icon": "fa-sitemap",
+      "name": "ثانياً: النطاق القيادي والتنفيذي (مرحلة التنفيذ)",
+      "badge": "القيادة والتنفيذ المباشر",
+      "color": "palm",
+      "roles": [
+        {
+          "id": "role_lead_project_head",
+          "icon": "fa-laptop-code",
+          "title": "رئيس المشروع والإدارة التقنية",
+          "holder": "عبدالإله العصفور",
+          "status": "active",
+          "tierId": "tier_leadership",
+          "priority": "critical",
+          "subgroup": "",
+          "username": "admin",
+          "description": "يتولى القيادة العامة لمرحلة التنفيذ، وإدارة وتطوير الجوانب التقنية والتطبيقات، والإشراف الاستراتيجي المشترك على صناعة المحتوى.",
+          "statusLabel": "معتمد"
+        },
+        {
+          "id": "role_lead_ceo",
+          "icon": "fa-user-tie",
+          "title": "المدير التنفيذي",
+          "holder": "ثامر الجعفري",
+          "status": "active",
+          "tierId": "tier_leadership",
+          "priority": "critical",
+          "subgroup": "",
+          "username": "Thamer",
+          "description": "يتولى إدارة التنفيذ التشغيلي، صياغة العقود لرفعها لمجلس الإدارة، إصدار أوامر الصرف المالي، والإشراف الاستراتيجي المشترك على الشركة الخارجية لصناعة المحتوى.",
+          "statusLabel": "معتمد"
+        }
+      ],
+      "number": 2,
+      "description": "القيادة الميدانية المباشرة والإدارة التنفيذية والتقنية للمشروع."
+    },
+    {
+      "id": "tier_specialized_ops",
+      "icon": "fa-gears",
+      "name": "ثالثاً: النطاق التشغيلي المتخصص (مرحلة التنفيذ والمتابعة)",
+      "badge": "التشغيل التخصصي والمحتوى",
+      "color": "laser",
+      "roles": [
+        {
+          "id": "role_ops_science_head",
+          "icon": "fa-book-quran",
+          "title": "رئيس الجهة العلمية",
+          "holder": "شاغر",
+          "status": "active",
+          "tierId": "tier_specialized_ops",
+          "priority": "high",
+          "subgroup": "الجهة العلمية",
+          "description": "يتولى القيادة والاعتماد المرجعي الدقيق لكافة مخرجات المشروع، وضمان جودة المحتوى العلمي.",
+          "statusLabel": "شاغر"
+        },
+        {
+          "id": "role_ops_science_advisor",
+          "icon": "fa-graduation-cap",
+          "title": "المستشار العلمي",
+          "holder": "أحمد الدوغان",
+          "status": "active",
+          "tierId": "tier_specialized_ops",
+          "priority": "high",
+          "subgroup": "الجهة العلمية",
+          "username": "Ahmed",
+          "description": "يقدم الاستشارات والتوجيه للمفاصل العلمية الرئيسية للمشروع.",
+          "statusLabel": "معتمد"
+        },
+        {
+          "id": "role_ops_finance",
+          "icon": "fa-coins",
+          "title": "إدارة المالية والمتابعة",
+          "holder": "أنس الدوغان",
+          "status": "active",
+          "tierId": "tier_specialized_ops",
+          "priority": "high",
+          "subgroup": "",
+          "username": "Anas",
+          "description": "تختص بالمراقبة، تقييد العمليات المحاسبية، ضبط الإيرادات والمصروفات، وتنفيذ الحوالات المالية (بناءً على أوامر الصرف).",
+          "statusLabel": "معتمد"
+        },
+        {
+          "id": "role_ops_media",
+          "icon": "fa-bullhorn",
+          "title": "الإدارة الإعلامية والشراكات",
+          "holder": "السيد عبدالرحمن",
+          "status": "active",
+          "tierId": "tier_specialized_ops",
+          "priority": "high",
+          "subgroup": "",
+          "username": "abdulrahman",
+          "description": "يتولى التحدث الرسمي باسم المشروع، عرضه على الجهات، وإدارة العلاقات العامة.",
+          "statusLabel": "معتمد"
+        },
+        {
+          "id": "role_ops_sponsors",
+          "icon": "fa-handshake-angle",
+          "title": "إدارة علاقات الداعمين والمشاركين",
+          "holder": "شاغر",
+          "status": "vacant",
+          "tierId": "tier_specialized_ops",
+          "priority": "medium",
+          "subgroup": "",
+          "description": "تتولى المتابعة اليومية مع الرعاة والداعمين، وإدارة تجربة المشاركين في المشروع.",
+          "statusLabel": "شاغر"
+        },
+        {
+          "id": "role_ops_coordination",
+          "icon": "fa-calendar-check",
+          "title": "إدارة التنسيق والتواصل",
+          "holder": "السيد أسامة",
+          "status": "active",
+          "tierId": "tier_specialized_ops",
+          "priority": "medium",
+          "subgroup": "",
+          "username": "Osamah",
+          "description": "تتولى تنظيم الاجتماعات، التنسيق الداخلي بين الإدارات، وجدولة الأعمال.",
+          "statusLabel": "معتمد"
+        },
+        {
+          "id": "role_ops_content_company",
+          "icon": "fa-clapperboard",
+          "title": "صناعة المحتوى",
+          "holder": "شركة خارجية",
+          "status": "external",
+          "tierId": "tier_specialized_ops",
+          "priority": "high",
+          "subgroup": "",
+          "description": "تتولى الإنتاج الفني وتصميم المحتوى بناءً على اعتمادات (الرئيس، المدير التنفيذي، والجهة العلمية).",
+          "statusLabel": "شركة خارجية"
+        }
+      ],
+      "number": 3,
+      "description": "الإدارات التخصصية، التدقيق العلمي، العمليات المالية، الاتصال وصناعة المحتوى."
+    },
+    {
+      "id": "tier_post_execution",
+      "icon": "fa-clock-rotate-left",
+      "name": "رابعاً: نطاق التشغيل والمتابعة (مرحلة ما بعد اكتمال التنفيذ)",
+      "badge": "التشغيل والاستدامة الدائمة",
+      "color": "clay",
+      "roles": [
+        {
+          "id": "role_post_leadership",
+          "icon": "fa-user-clock",
+          "title": "رئاسة المشروع بعد اكتمال تنفيذه",
+          "holder": "شاغر",
+          "status": "vacant",
+          "tierId": "tier_post_execution",
+          "priority": "high",
+          "subgroup": "",
+          "description": "القيادة التشغيلية والمؤسسية للمشروع تحت الإشراف المباشر لمجلس وقف العلم بعد انتهاء مرحلة التنفيذ.",
+          "statusLabel": "شاغر"
+        },
+        {
+          "id": "role_post_maintenance",
+          "icon": "fa-wrench",
+          "title": "إدارة التشغيل والصيانة بعد اكتمال المشروع",
+          "holder": "شاغر",
+          "status": "vacant",
+          "tierId": "tier_post_execution",
+          "priority": "medium",
+          "subgroup": "",
+          "description": "إدارة التشغيل الميداني الدوري، الصيانة الفنية للتقنيات والأنظمة الهندسية ومرافق الزوار المستمرة.",
+          "statusLabel": "شاغر"
+        }
+      ],
+      "number": 4,
+      "description": "مرحلة الانتقال المؤسسي بعد اكتمال التنفيذ وتتولى استدامة المعرض والتشغيل والصيانة.",
+      "supervisorNote": "تنتقل مرجعية هذه المرحلة مباشرة تحت إشراف (مجلس وقف العلم)"
+    }
+  ],
+  "updatedAt": "2026-09-18T15:46:10.068Z",
+  "strategicNote": "هذه الهيكلة الإدارية مخصصة حصراً لـ مرحلة تنفيذ المشروع، وتُعتبر مهامها ولجانها منتهية بانتهاء اكتمال التنفيذ. بعد ذلك، تنتقل الإدارة إلى هيكل تنظيمي جديد يُعنى بالتشغيل والمتابعة، وتكون رئاسته ومرجعيته المباشرة تحت الجهة المشرفة العليا للمشروع وهي (مجلس وقف العلم)."
+}

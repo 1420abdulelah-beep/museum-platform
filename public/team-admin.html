@@ -185,94 +185,119 @@
         </div>
       </div>
 
-      <!-- Controls & Search Toolbar -->
-      <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        <div class="relative flex-1 max-w-md">
-          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-          <input type="text" id="filter-user-search" placeholder="بحث بالاسم أو اسم المستخدم أو التخصص..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-black/80 border border-white/15 text-xs text-white outline-none focus:border-gold transition-all" />
-        </div>
+      <!-- Section Navigation Tabs Switcher -->
+      <div class="flex items-center gap-3 border-b border-white/10 pb-3 flex-wrap">
+        <button id="admin-tab-org-btn" onclick="window.switchAdminSection('org')" class="px-5 py-3 rounded-2xl border border-gold text-xs font-black text-gold bg-gold/15 transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-gold/10">
+          <i class="fa-solid fa-sitemap text-sm"></i>
+          <span>الهيكل التنظيمي المعتمد (النطاقات الأربعة) 🏛️</span>
+        </button>
+        <button id="admin-tab-users-btn" onclick="window.switchAdminSection('users')" class="px-5 py-3 rounded-2xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white bg-white/5 transition-all flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-users-gear text-sm"></i>
+          <span>حسابات الفريق والصلاحيات (RBAC) 👑</span>
+        </button>
+      </div>
 
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-          <button class="filter-role-btn active px-3.5 py-2 rounded-xl border border-gold text-xs font-bold text-gold bg-gold/15 transition-all whitespace-nowrap cursor-pointer" data-role="all">
-            الكل (<span id="count-all">0</span>)
-          </button>
-          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="admin">
-            👑 المدراء (<span id="count-admin">0</span>)
-          </button>
-          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="editor">
-            ✍️ المحررون (<span id="count-editor">0</span>)
-          </button>
-          <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="viewer">
-            👁️ المستعرضون (<span id="count-viewer">0</span>)
-          </button>
+      <!-- Tab 1: Approved Organizational Structure Section -->
+      <div id="admin-section-org" class="flex flex-col gap-6">
+        <div id="admin-org-structure-container">
+          <div class="p-12 text-center text-gray-400 bg-black/60 rounded-3xl border border-white/10">
+            <i class="fa-solid fa-spinner fa-spin text-xl text-gold mb-3 block"></i>
+            <span>جاري تحميل الهيكل التنظيمي المعتمد...</span>
+          </div>
         </div>
       </div>
 
-      <!-- Team Members Table Card -->
-      <div class="rounded-3xl bg-black/60 border border-white/10 shadow-2xl overflow-hidden">
-        <div class="p-5 border-b border-white/10 flex items-center justify-between">
-          <h3 class="text-base font-black text-white flex items-center gap-2">
-            <i class="fa-solid fa-id-card-clip text-gold"></i>
-            <span>قائمة أعضاء الفريق وحساباتهم</span>
-          </h3>
-          <span class="text-xs text-gray-400">تحديث فوري ومتزامن مع قاعدة البيانات</span>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-right text-xs">
-            <thead class="bg-white/[0.03] text-gray-400 border-b border-white/10 font-bold">
-              <tr>
-                <th class="p-4">العضو / الاسم الكامل</th>
-                <th class="p-4">اسم المستخدم (Username)</th>
-                <th class="p-4">المسار / التخصص</th>
-                <th class="p-4">مستوى الصلاحية</th>
-                <th class="p-4">تاريخ الإضافة</th>
-                <th class="p-4 text-center">الإجراءات والتحكم</th>
-              </tr>
-            </thead>
-            <tbody id="users-table-body" class="divide-y divide-white/5">
-              <!-- Populated dynamically via js/teamAdmin.js -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Permissions Matrix Guide Card -->
-      <div class="p-6 rounded-3xl bg-black/60 border border-white/10 shadow-xl flex flex-col gap-4">
-        <div class="flex items-center gap-2 border-b border-white/10 pb-3">
-          <i class="fa-solid fa-shield-halved text-gold text-lg"></i>
-          <h3 class="text-base font-black text-white">دليل حوكمة الصلاحيات (RBAC Privilege Matrix)</h3>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div class="p-4 rounded-2xl bg-gold/5 border border-gold/30 flex flex-col gap-2">
-            <div class="flex items-center gap-2 text-gold font-black text-sm">
-              <i class="fa-solid fa-crown"></i>
-              <span>👑 مدير النظام (Admin)</span>
-            </div>
-            <p class="text-gray-300 text-[11px] leading-relaxed">
-              كامل الصلاحيات المركزية: إضافة وتعديل وحذف مستخدمي المنظومة، إدارة النسخ الاحتياطية، حسم القرارات الاستراتيجية، تعديل كافة المحاور، والتصدير.
-            </p>
+      <!-- Tab 2: User Accounts, Roles & RBAC Matrix Section -->
+      <div id="admin-section-users" class="hidden flex-col gap-8">
+        <!-- Controls & Search Toolbar -->
+        <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div class="relative flex-1 max-w-md">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            <input type="text" id="filter-user-search" placeholder="بحث بالاسم أو اسم المستخدم أو التخصص..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-black/80 border border-white/15 text-xs text-white outline-none focus:border-gold transition-all" />
           </div>
 
-          <div class="p-4 rounded-2xl bg-palm/5 border border-palm/30 flex flex-col gap-2">
-            <div class="flex items-center gap-2 text-palm font-black text-sm">
-              <i class="fa-solid fa-user-pen"></i>
-              <span>✍️ محرر ومسؤول (Editor)</span>
-            </div>
-            <p class="text-gray-300 text-[11px] leading-relaxed">
-              صلاحية العمل الميداني والتحرير: إضافة وتعديل وحذف المهام، مراجعة واعتماد بنود المتحف والـ PDR، تحرير المشاهد والمقتنيات، والمشاركة في مصفوفة القرارات.
-            </p>
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+            <button class="filter-role-btn active px-3.5 py-2 rounded-xl border border-gold text-xs font-bold text-gold bg-gold/15 transition-all whitespace-nowrap cursor-pointer" data-role="all">
+              الكل (<span id="count-all">0</span>)
+            </button>
+            <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="admin">
+              👑 المدراء (<span id="count-admin">0</span>)
+            </button>
+            <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="editor">
+              ✍️ المحررون (<span id="count-editor">0</span>)
+            </button>
+            <button class="filter-role-btn px-3.5 py-2 rounded-xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap cursor-pointer" data-role="viewer">
+              👁️ المستعرضون (<span id="count-viewer">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- Team Members Table Card -->
+        <div class="rounded-3xl bg-black/60 border border-white/10 shadow-2xl overflow-hidden">
+          <div class="p-5 border-b border-white/10 flex items-center justify-between">
+            <h3 class="text-base font-black text-white flex items-center gap-2">
+              <i class="fa-solid fa-id-card-clip text-gold"></i>
+              <span>قائمة أعضاء الفريق وحساباتهم</span>
+            </h3>
+            <span class="text-xs text-gray-400">تحديث فوري ومتزامن مع قاعدة البيانات</span>
           </div>
 
-          <div class="p-4 rounded-2xl bg-laser/5 border border-laser/30 flex flex-col gap-2">
-            <div class="flex items-center gap-2 text-laser font-black text-sm">
-              <i class="fa-solid fa-eye"></i>
-              <span>👁️ استعراض فقط (Viewer)</span>
+          <div class="overflow-x-auto">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-white/[0.03] text-gray-400 border-b border-white/10 font-bold">
+                <tr>
+                  <th class="p-4">العضو / الاسم الكامل</th>
+                  <th class="p-4">اسم المستخدم (Username)</th>
+                  <th class="p-4">المسار / التخصص</th>
+                  <th class="p-4">مستوى الصلاحية</th>
+                  <th class="p-4">تاريخ الإضافة</th>
+                  <th class="p-4 text-center">الإجراءات والتحكم</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body" class="divide-y divide-white/5">
+                <!-- Populated dynamically via js/teamAdmin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Permissions Matrix Guide Card -->
+        <div class="p-6 rounded-3xl bg-black/60 border border-white/10 shadow-xl flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+            <i class="fa-solid fa-shield-halved text-gold text-lg"></i>
+            <h3 class="text-base font-black text-white">دليل حوكمة الصلاحيات (RBAC Privilege Matrix)</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-2xl bg-gold/5 border border-gold/30 flex flex-col gap-2">
+              <div class="flex items-center gap-2 text-gold font-black text-sm">
+                <i class="fa-solid fa-crown"></i>
+                <span>👑 مدير النظام (Admin)</span>
+              </div>
+              <p class="text-gray-300 text-[11px] leading-relaxed">
+                كامل الصلاحيات المركزية: إضافة وتعديل وحذف مستخدمي المنظومة، إدارة النسخ الاحتياطية، حسم القرارات الاستراتيجية، تعديل كافة المحاور، والتصدير.
+              </p>
             </div>
-            <p class="text-gray-300 text-[11px] leading-relaxed">
-              صلاحية اطلاع وقراءة: تصفح كافة التبويبات الـ 12، قراءة وثيقة PDR، استعراض محاكي الحواس، وتصدير التقارير دون إمكانية التعديل على البيانات الأصلية.
-            </p>
+
+            <div class="p-4 rounded-2xl bg-palm/5 border border-palm/30 flex flex-col gap-2">
+              <div class="flex items-center gap-2 text-palm font-black text-sm">
+                <i class="fa-solid fa-user-pen"></i>
+                <span>✍️ محرر ومسؤول (Editor)</span>
+              </div>
+              <p class="text-gray-300 text-[11px] leading-relaxed">
+                صلاحية العمل الميداني والتحرير: إضافة وتعديل وحذف المهام، مراجعة واعتماد بنود المتحف والـ PDR، تحرير المشاهد والمقتنيات، والمشاركة في مصفوفة القرارات.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-laser/5 border border-laser/30 flex flex-col gap-2">
+              <div class="flex items-center gap-2 text-laser font-black text-sm">
+                <i class="fa-solid fa-eye"></i>
+                <span>👁️ استعراض فقط (Viewer)</span>
+              </div>
+              <p class="text-gray-300 text-[11px] leading-relaxed">
+                صلاحية اطلاع وقراءة: تصفح كافة التبويبات الـ 12، قراءة وثيقة PDR، استعراض محاكي الحواس، وتصدير التقارير دون إمكانية التعديل على البيانات الأصلية.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -353,8 +378,44 @@
   <script src="js/authGuard.js"></script>
   <script src="js/detailedPlanData.js"></script>
   <script src="js/pdrData.js"></script>
+  <script src="js/orgStructure.js"></script>
   <script src="js/teamAdmin.js"></script>
   <script src="js/platformNav.js"></script>
   <script src="js/executiveReportGenerator.js"></script>
+
+  <script>
+    window.switchAdminSection = function(section) {
+      const btnOrg = document.getElementById("admin-tab-org-btn");
+      const btnUsers = document.getElementById("admin-tab-users-btn");
+      const secOrg = document.getElementById("admin-section-org");
+      const secUsers = document.getElementById("admin-section-users");
+
+      if (section === 'org') {
+        btnOrg.className = "px-5 py-3 rounded-2xl border border-gold text-xs font-black text-gold bg-gold/15 transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-gold/10";
+        btnUsers.className = "px-5 py-3 rounded-2xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white bg-white/5 transition-all flex items-center gap-2 cursor-pointer";
+        secOrg.classList.remove("hidden");
+        secOrg.classList.add("flex");
+        secUsers.classList.add("hidden");
+        secUsers.classList.remove("flex");
+      } else {
+        btnUsers.className = "px-5 py-3 rounded-2xl border border-gold text-xs font-black text-gold bg-gold/15 transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-gold/10";
+        btnOrg.className = "px-5 py-3 rounded-2xl border border-white/10 text-xs font-bold text-gray-400 hover:text-white bg-white/5 transition-all flex items-center gap-2 cursor-pointer";
+        secOrg.classList.add("hidden");
+        secOrg.classList.remove("flex");
+        secUsers.classList.remove("hidden");
+        secUsers.classList.add("flex");
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      if (window.App && window.App.OrgStructure) {
+        await window.App.OrgStructure.init();
+        const container = document.getElementById("admin-org-structure-container");
+        if (container) {
+          window.App.OrgStructure.render(container);
+        }
+      }
+    });
+  </script>
 </body>
 </html>

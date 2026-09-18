@@ -27,6 +27,7 @@ const PDR_DB_FILE = path.join(DATA_DIR, 'pdr_database.json');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const LEADS_FILE = path.join(DATA_DIR, 'leads.json');
 const NOTES_FILE = path.join(DATA_DIR, 'platform_notes.json');
+const ORG_STRUCTURE_FILE = path.join(DATA_DIR, 'org_structure.json');
 const BACKUPS_DIR = path.join(DATA_DIR, 'backups');
 
 // Ensure local directories exist for backup & fallback
@@ -866,6 +867,53 @@ const saveNotes = async (notes, updatedBy = 'unknown') => {
 };
 
 // ==========================================
+// 4.2 Organizational Structure CRUD Operations
+// ==========================================
+
+const getOrgStructureData = async () => {
+  await ensureReady();
+  if (usePostgres && pool) {
+    try {
+      const res = await pool.query("SELECT data FROM platform_data WHERE key = 'org_structure'");
+      if (res.rows.length > 0 && res.rows[0].data) {
+        return res.rows[0].data;
+      }
+    } catch (err) {
+      console.error('DB error getOrgStructureData, fallback to file:', err.message);
+    }
+  }
+
+  if (fs.existsSync(ORG_STRUCTURE_FILE)) {
+    try { return JSON.parse(fs.readFileSync(ORG_STRUCTURE_FILE, 'utf-8')); } catch (_) {}
+  }
+  return null;
+};
+
+const saveOrgStructureData = async (data, updatedBy = 'unknown') => {
+  await ensureReady();
+  try {
+    fs.writeFileSync(ORG_STRUCTURE_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (_) {}
+
+  if (usePostgres && pool) {
+    try {
+      await pool.query(
+        `INSERT INTO platform_data (key, data, updated_by, updated_at)
+         VALUES ('org_structure', $1, $2, NOW())
+         ON CONFLICT (key) DO UPDATE
+         SET data = EXCLUDED.data, updated_by = EXCLUDED.updated_by, updated_at = NOW()`,
+        [JSON.stringify(data), updatedBy]
+      );
+      return true;
+    } catch (err) {
+      console.error('DB error saveOrgStructureData:', err.message);
+      throw err;
+    }
+  }
+  return true;
+};
+
+// ==========================================
 // 5. Backups & System Snapshots Operations
 // ==========================================
 
@@ -881,6 +929,7 @@ const createBackup = async (type = 'auto', note = '') => {
   const leadsData = await getLeads();
   const pdrData = await getPdrData();
   const notesData = await getNotes();
+  const orgStructureData = await getOrgStructureData();
 
   const snapshot = {
     id: backupId,
@@ -893,7 +942,8 @@ const createBackup = async (type = 'auto', note = '') => {
       pdr: pdrData,
       users: usersData,
       leads: leadsData,
-      notes: notesData
+      notes: notesData,
+      orgStructure: orgStructureData
     }
   };
 
@@ -988,6 +1038,10 @@ const restoreFromSnapshot = async (filename, adminUsername = 'admin') => {
   if (snapshot.data && snapshot.data.notes) {
     await saveNotes(snapshot.data.notes, `restore_by_${adminUsername}`);
   }
+  // Restore Org Structure
+  if (snapshot.data && snapshot.data.orgStructure) {
+    await saveOrgStructureData(snapshot.data.orgStructure, `restore_by_${adminUsername}`);
+  }
   // Restore Users
   if (snapshot.data && Array.isArray(snapshot.data.users)) {
     for (const u of snapshot.data.users) {
@@ -1039,6 +1093,8 @@ module.exports = {
   savePdrData,
   getNotes,
   saveNotes,
+  getOrgStructureData,
+  saveOrgStructureData,
   getLeads,
   addLead,
   createBackup,

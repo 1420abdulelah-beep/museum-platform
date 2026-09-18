@@ -291,6 +291,11 @@
         <div class="w-[1px] h-4 bg-white/15 mx-1 shrink-0"></div>
 
         <!-- Category 4: Team & Governance -->
+        <button class="plan-sub-tab-btn px-3.5 py-2 rounded-xl border border-gold text-xs font-bold text-gold bg-gold/10 transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 shadow-sm cursor-pointer" data-plan-tab="org_structure" onclick="window.App && window.App.planController ? window.App.planController.switchTab('org_structure') : null">
+          <i class="fa-solid fa-sitemap text-gold"></i>
+          <span>الهيكل التنظيمي 🏛️</span>
+        </button>
+
         <button class="plan-sub-tab-btn px-3.5 py-2 rounded-xl border border-laser text-xs font-bold text-laser bg-laser/10 transition-all whitespace-nowrap flex items-center gap-1.5 shrink-0 shadow-sm cursor-pointer" data-plan-tab="team" onclick="window.App && window.App.planController ? window.App.planController.switchTab('team') : null">
           <i class="fa-solid fa-users"></i>
           <span>فريق العمل</span>
@@ -460,6 +465,7 @@
   <script src="js/detailedPlanController.js"></script>
   
   <!-- Master Datasets & Word Exporter -->
+  <script src="js/orgStructure.js"></script>
   <script src="js/pdrData.js"></script>
   <script src="js/pdrWordExporter.js"></script>
 
