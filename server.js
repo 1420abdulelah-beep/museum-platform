@@ -877,7 +877,8 @@ const requestHandler = async (req, res) => {
       res.writeHead(200, {
         'Content-Length': stats.size,
         'Content-Type': contentType,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': (ext === '.html' || ext === '.json') ? 'no-cache, no-store, must-revalidate' : 'no-cache, must-revalidate'
       });
       fs.createReadStream(filePath).pipe(res);
     }
